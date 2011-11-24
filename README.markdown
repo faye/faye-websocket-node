@@ -58,7 +58,7 @@ var WebSocket = require('faye-websocket'),
 
 ws.onopen = function(event) {
   console.log('open');
-  ws.send('Hello, WebSocket!');
+  ws.send('Hello, world!');
 };
 
 ws.onmessage = function(event) {
