@@ -1,6 +1,10 @@
 var WebSocket = require('../lib/faye/websocket'),
     port      = process.argv[2] || 7000,
-    ws        = new WebSocket.Client('ws://localhost:' + port + '/');
+    secure    = process.argv[3] === 'ssl',
+    scheme    = secure ? 'wss' : 'ws',
+    ws        = new WebSocket.Client(scheme + '://localhost:' + port + '/');
+
+console.log('Connecting to ' + ws.url);
 
 ws.onopen = function(event) {
   console.log('open');

@@ -1,10 +1,12 @@
 var WebSocket = require('../lib/faye/websocket'),
     fs        = require('fs'),
-    http      = require('http');
+    http      = require('http'),
+    https     = require('https');
 
-var port = process.argv[2] || 7000;
+var port   = process.argv[2] || 7000,
+    secure = process.argv[3] === 'ssl';
 
-var server = http.createServer(function(request, response) {
+var staticHandler = function(request, response) {
   var path = request.url;
   
   fs.readFile(__dirname + path, function(err, content) {
@@ -13,7 +15,14 @@ var server = http.createServer(function(request, response) {
     response.write(content || 'Not found');
     response.end();
   });
-});
+};
+
+var server = secure
+           ? https.createServer({
+               key:  fs.readFileSync(__dirname + '/../spec/server.key'),
+               cert: fs.readFileSync(__dirname + '/../spec/server.crt')
+             })
+           : http.createServer(staticHandler);
 
 server.addListener('upgrade', function(request, socket, head) {
   var ws = new WebSocket(request, socket, head);
