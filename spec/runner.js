@@ -1,5 +1,9 @@
 require('jsclass')
-var WebSocket = require('../lib/faye/websocket')
+
+var WebSocket = require('../lib/faye/websocket'),
+    fs        = require('fs'),
+    http      = require('http'),
+    https     = require('https')
 
 
 JS.ENV.FakeSocket = function() {
@@ -20,8 +24,14 @@ FakeSocket.prototype.addListener = function() {}
 
 
 JS.ENV.EchoServer = function() {}
-EchoServer.prototype.listen = function(port) {
-  var server = require('http').createServer()
+EchoServer.prototype.listen = function(port, ssl) {
+  var server = ssl
+             ? https.createServer({
+                 key:  fs.readFileSync(__dirname + '/server.key'),
+                 cert: fs.readFileSync(__dirname + '/server.crt')
+               })
+             : http.createServer()
+  
   server.addListener('upgrade', function(request, socket, head) {
     var ws = new WebSocket(request, socket, head)
     ws.onmessage = function(event) {

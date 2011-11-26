@@ -1,9 +1,9 @@
 var Client = require('../../../lib/faye/websocket/client')
 
 JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
-  server: function(port, callback) {
+  server: function(port, secure, callback) {
     this._adapter = new EchoServer()
-    this._adapter.listen(port)
+    this._adapter.listen(port, secure)
     this._port = port
     setTimeout(callback, 100)
   },
@@ -75,43 +75,76 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
 JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
   include(WebSocketSteps)
   
-  before(function() { this.server(8000) })
-  after (function() { this.stop() })
+  before(function() {
+    this.plain_text_url  = "ws://localhost:8000/bayeux"
+    this.secure_url      = "wss://localhost:8000/bayeux"
+  })
   
-  it("can open a connection", function() { with(this) {
-    open_socket("ws://localhost:8000/bayeux")
-    check_open()
-  }})
-  
-  it("can close the connection", function() { with(this) {
-    open_socket("ws://localhost:8000/bayeux")
-    close_socket()
-    check_closed()
-  }})
-  
-  describe("in the OPEN state", function() { with(this) {
-    before(function() { with(this) {
-      open_socket("ws://localhost:8000/bayeux")
+  sharedBehavior("socket client", function() { with(this) {
+    it("can open a connection", function() { with(this) {
+      open_socket(socket_url)
+      check_open()
     }})
     
-    it("can send and receive messages", function() { with(this) {
-      listen_for_message()
-      send_message()
-      check_response()
+    it("cannot open a connection to the wrong host", function() { with(this) {
+      open_socket(blocked_url)
+      check_closed()
     }})
-  }})
-  
-  describe("in the CLOSED state", function() { with(this) {
-    before(function() { with(this) {
-      open_socket("ws://localhost:8000/bayeux")
+    
+    it("can close the connection", function() { with(this) {
+      open_socket(socket_url)
       close_socket()
+      check_closed()
     }})
     
-    it("cannot send and receive messages", function() { with(this) {
-      listen_for_message()
-      send_message()
-      check_no_response()
+    describe("in the OPEN state", function() { with(this) {
+      before(function() { with(this) {
+        open_socket(socket_url)
+      }})
+      
+      it("can send and receive messages", function() { with(this) {
+        listen_for_message()
+        send_message()
+        check_response()
+      }})
     }})
+    
+    describe("in the CLOSED state", function() { with(this) {
+      before(function() { with(this) {
+        open_socket(socket_url)
+        close_socket()
+      }})
+      
+      it("cannot send and receive messages", function() { with(this) {
+        listen_for_message()
+        send_message()
+        check_no_response()
+      }})
+    }})
+  }})
+  
+  describe("with a plain-text server", function() { with(this) {
+    before(function() {
+      this.socket_url  = this.plain_text_url
+      this.blocked_url = this.secure_url
+    })
+    
+    before(function() { this.server(8000, false) })
+    after (function() { this.stop() })
+    
+    behavesLike("socket client")
+  }})
+  
+  describe("with a secure server", function() { with(this) {
+    before(function() {
+      this.socket_url  = this.secure_url
+      this.blocked_url = this.plain_text_url
+    })
+    
+    before(function() { this.server(8000, true) })
+    after (function() { this.stop() })
+    
+    behavesLike("socket client")
   }})
 }})
 
