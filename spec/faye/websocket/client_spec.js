@@ -51,7 +51,7 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
   
   listen_for_message: function(callback) {
     var self = this
-    this._ws.onmessage = function(message) { self._message = message.data }
+    this._ws.addEventListener('message', function(message) { self._message = message.data })
     callback()
   },
   
