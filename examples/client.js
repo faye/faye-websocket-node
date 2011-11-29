@@ -11,10 +11,10 @@ ws.onopen = function(event) {
   ws.send('Hello, WebSocket!');
 };
 
-ws.addEventListener('message', function(event) {
+ws.onmessage = function(event) {
   console.log('message', event.data);
   // ws.close(1002, 'Going away');
-});
+};
 
 ws.onclose = function(event) {
   console.log('close', event.code, event.reason);
