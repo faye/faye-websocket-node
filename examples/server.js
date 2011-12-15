@@ -25,8 +25,8 @@ var server = secure
            : http.createServer(staticHandler);
 
 server.addListener('upgrade', function(request, socket, head) {
-  var ws = new WebSocket(request, socket, head);
-  console.log('open', ws.url, ws.version);
+  var ws = new WebSocket(request, socket, head, ['irc', 'xmpp']);
+  console.log('open', ws.url, ws.version, ws.protocol);
   
   ws.onmessage = function(event) {
     ws.send(event.data);
