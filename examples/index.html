@@ -21,6 +21,10 @@
         socket.send('Hello, world');
       };
       
+      socket.onerror = function(event) {
+        logger.innerHTML += '<li>ERROR: ' + error.message + '</li>';
+      };
+      
       socket.addEventListener('message', function(event) {
         logger.innerHTML += '<li>MESSAGE: ' + event.data + '</li>';
         setTimeout(function() { socket.send(++index + ' ' + event.data) }, 2000);
