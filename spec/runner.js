@@ -6,23 +6,6 @@ var WebSocket = require('../lib/faye/websocket'),
     https     = require('https')
 
 
-JS.ENV.FakeSocket = function() {
-  this._fragments = []
-}
-FakeSocket.prototype.write = function(buffer, encoding) {
-  this._fragments.push([buffer, encoding])
-}
-FakeSocket.prototype.read = function() {
-  var output = []
-  this._fragments.forEach(function(buffer, i) {
-    for (var j = 0, n = buffer[0].length; j < n; j++)
-    output.push(buffer[0][j])
-  })
-  return output
-}
-FakeSocket.prototype.addListener = function() {}
-
-
 JS.ENV.EchoServer = function() {}
 EchoServer.prototype.listen = function(port, ssl) {
   var server = ssl
@@ -55,6 +38,13 @@ JS.Packages(function() { with(this) {
 
 
 JS.require('JS.Test', function() {
+  JS.Test.Unit.Assertions.define("assertBufferEqual", function(array, buffer) {
+    this.assertEqual(array.length, buffer.length);
+    var ary = [], n = buffer.length;
+    while (n--) ary[n] = buffer[n];
+    this.assertEqual(array, ary);
+  })
+  
   JS.require( 'ClientSpec',
               'Draft75ParserSpec',
               'Protocol8ParserSpec',
