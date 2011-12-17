@@ -3,8 +3,7 @@ var Protocol8Parser = require('../../../lib/faye/websocket/protocol8_parser')
 JS.ENV.Protocol8ParserSpec = JS.Test.describe("Protocol8Parser", function() { with(this) {
   before(function() { with(this) {
     this.webSocket = {dispatchEvent: function() {}}
-    this.socket = new FakeSocket
-    this.parser = new Protocol8Parser(webSocket, socket)
+    this.parser = new Protocol8Parser(webSocket)
   }})
   
   define("parse", function() {
@@ -116,18 +115,15 @@ JS.ENV.Protocol8ParserSpec = JS.Test.describe("Protocol8Parser", function() { wi
   
   describe("frame", function() { with(this) {
     it("returns the given string formatted as a WebSocket frame", function() { with(this) {
-      parser.frame("Hello")
-      assertEqual( [0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f], socket.read() )
+      assertBufferEqual( [0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f], parser.frame("Hello") )
     }})
     
     it("encodes multibyte characters correctly", function() { with(this) {
-      parser.frame("Apple = ")
-      assertEqual( [0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf], socket.read() )
+      assertBufferEqual( [0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf], parser.frame("Apple = ") )
     }})
     
     it("encodes medium-length strings using extra length bytes", function() { with(this) {
-      parser.frame("HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello")
-      assertEqual( [129, 126, 0, 200, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111], socket.read() )
+      assertBufferEqual( [129, 126, 0, 200, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111, 72, 101, 108, 108, 111], parser.frame("HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello") )
     }})
     
     it("encodes long strings using extra length bytes", function() { with(this) {
@@ -136,18 +132,15 @@ JS.ENV.Protocol8ParserSpec = JS.Test.describe("Protocol8Parser", function() { wi
         message += "Hello"
         output = output.concat([0x48, 0x65, 0x6c, 0x6c, 0x6f])
       }
-      parser.frame(message)
-      assertEqual( output, socket.read() )
+      assertBufferEqual( output, parser.frame(message) )
     }})
     
     it("encodes close frames with an error code", function() { with(this) {
-      parser.frame("Hello", "close", 1002)
-      assertEqual( [0x88, 0x07, 0x03, 0xea, 0x48, 0x65, 0x6c, 0x6c, 0x6f], socket.read() )
+      assertBufferEqual( [0x88, 0x07, 0x03, 0xea, 0x48, 0x65, 0x6c, 0x6c, 0x6f], parser.frame("Hello", "close", 1002) )
     }})
     
     it("encodes pong frames", function() { with(this) {
-      parser.frame("", "pong")
-      assertEqual( [0x8a, 0x00], socket.read() )
+      assertBufferEqual( [0x8a, 0x00], parser.frame("", "pong") )
     }})
   }})
 }})
