@@ -44,16 +44,6 @@ server.addListener('upgrade', function(request, socket, head) {
 server.listen(8000);
 ```
 
-If you want to add subprotocol negotiation through the `Sec-WebSocket-Protocol`
-header, pass a list of supported protocols when constructing the socket:
-
-```js
-var ws = new WebSocket(request, socket, head, ['irc', 'amqp']);
-```
-
-If the client and server agree on a subprotocol, you can find out which one is
-in use through the `ws.protocol` property.
-
 
 ## Using the WebSocket client
 
@@ -81,16 +71,28 @@ ws.onclose = function(event) {
 };
 ```
 
-If you want to add subprotocol negotiation through the `Sec-WebSocket-Protocol`
-header, pass a list of supported protocols when constructing the socket:
+
+## Subprotocol negotiation
+
+The WebSocket protocol allows peers to select and identify the application
+protocol to use over the connection. On the client side, you can set which
+protocols the client accepts by passing a list of protocol names when you
+construct the socket:
 
 ```js
 var ws = new WebSocket.Client('ws://www.example.com/', ['irc', 'amqp']);
 ```
 
-If the client and server agree on a subprotocol, you can find out which one is
-in use through the `ws.protocol` property. If the server does not support any of
-the client's requested protocols, the connection is closed.
+On the server side, you can likewise pass in the list of protocols the server
+supports after the other constructor arguments:
+
+```js
+var ws = new WebSocket(request, socket, head, ['irc', 'amqp']);
+```
+
+If the client and server agree on a protocol, both the client- and server-side
+socket objects expose the selected protocol through the `ws.protocol` property.
+If they cannot agree on a protocol to use, the client closes the connection.
 
 
 ## WebSocket API
