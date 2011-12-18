@@ -59,8 +59,8 @@ in use through the `ws.protocol` property.
 
 The client supports both the plain-text `ws` protocol and the encrypted `wss`
 protocol, and has exactly the same interface as a socket you would use in a web
-browser. On the wire it identifies itself as hybi-08, though it's compatible
-with servers speaking later versions of the protocol, at least up to version 17.
+browser. On the wire it identifies itself as hybi-13, though it's compatible
+with servers speaking later versions of the protocol.
 
 ```js
 var WebSocket = require('faye-websocket'),
