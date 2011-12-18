@@ -44,6 +44,16 @@ server.addListener('upgrade', function(request, socket, head) {
 server.listen(8000);
 ```
 
+If you want to add subprotocol negotiation through the `Sec-WebSocket-Protocol`
+header, pass a list of supported protocols when constructing the socket:
+
+```js
+var ws = new WebSocket(request, socket, head, ['irc', 'amqp']);
+```
+
+If the client and server agree on a subprotocol, you can find out which one is
+in use through the `ws.protocol` property.
+
 
 ## Using the WebSocket client
 
@@ -71,6 +81,17 @@ ws.onclose = function(event) {
 };
 ```
 
+If you want to add subprotocol negotiation through the `Sec-WebSocket-Protocol`
+header, pass a list of supported protocols when constructing the socket:
+
+```js
+var ws = new WebSocket.Client('ws://www.example.com/', ['irc', 'amqp']);
+```
+
+If the client and server agree on a subprotocol, you can find out which one is
+in use through the `ws.protocol` property. If the server does not support any of
+the client's requested protocols, the connection is closed.
+
 
 ## WebSocket API
 
@@ -92,6 +113,8 @@ messages.
   sends a text or binary message over the connection to the other peer.
 * <b><tt>close(code, reason)</tt></b> closes the connection, sending the given
   status code and reason text, both of which are optional.
+* <b><tt>protocol</tt></b> is a string or `null` identifying the subprotocol the
+  socket is using.
 
 
 ## License
