@@ -16,7 +16,7 @@ EchoServer.prototype.listen = function(port, ssl) {
              : http.createServer()
   
   server.addListener('upgrade', function(request, socket, head) {
-    var ws = new WebSocket(request, socket, head)
+    var ws = new WebSocket(request, socket, head, ["echo"])
     ws.onmessage = function(event) {
       ws.send(event.data)
     }

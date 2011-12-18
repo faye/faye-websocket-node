@@ -13,7 +13,7 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
     setTimeout(callback, 100)
   },
   
-  open_socket: function(url, callback) {
+  open_socket: function(url, protocols, callback) {
     var done = false,
         self = this,
         
@@ -24,7 +24,7 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
                    callback()
                  }
     
-    this._ws = new Client(url)
+    this._ws = new Client(url, protocols)
     
     this._ws.onopen  = function() { resume(true)  }
     this._ws.onclose = function() { resume(false) }
@@ -46,6 +46,11 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
   
   check_closed: function(callback) {
     this.assert( !this._open )
+    callback()
+  },
+  
+  check_protocol: function(protocol, callback) {
+    this.assertEqual( protocol, this._ws.protocol )
     callback()
   },
   
@@ -76,30 +81,37 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
   include(WebSocketSteps)
   
   before(function() {
+    this.protocols       = ["foo", "echo"]
     this.plain_text_url  = "ws://localhost:8000/bayeux"
     this.secure_url      = "wss://localhost:8000/bayeux"
   })
   
   sharedBehavior("socket client", function() { with(this) {
     it("can open a connection", function() { with(this) {
-      open_socket(socket_url)
+      open_socket(socket_url, protocols)
       check_open()
+      check_protocol("echo")
     }})
     
     it("cannot open a connection to the wrong host", function() { with(this) {
-      open_socket(blocked_url)
+      open_socket(blocked_url, protocols)
+      check_closed()
+    }})
+    
+    it("cannot open a connection with unacceptable protocols", function() { with(this) {
+      open_socket(socket_url, ["foo"])
       check_closed()
     }})
     
     it("can close the connection", function() { with(this) {
-      open_socket(socket_url)
+      open_socket(socket_url, protocols)
       close_socket()
       check_closed()
     }})
     
     describe("in the OPEN state", function() { with(this) {
       before(function() { with(this) {
-        open_socket(socket_url)
+        open_socket(socket_url, protocols)
       }})
       
       it("can send and receive messages", function() { with(this) {
@@ -111,7 +123,7 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
     
     describe("in the CLOSED state", function() { with(this) {
       before(function() { with(this) {
-        open_socket(socket_url)
+        open_socket(socket_url, protocols)
         close_socket()
       }})
       
