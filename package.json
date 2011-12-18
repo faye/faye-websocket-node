@@ -1,5 +1,5 @@
 { "name"            : "faye-websocket"
-, "description"     : "Robust general-purpose WebSocket server and client"
+, "description"     : "Standards-compliant WebSocket server and client"
 , "homepage"        : "http://github.com/jcoglan/faye-websocket-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket"]
