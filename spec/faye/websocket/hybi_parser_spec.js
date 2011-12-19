@@ -1,9 +1,9 @@
-var Protocol8Parser = require('../../../lib/faye/websocket/protocol8_parser')
+var HybiParser = require('../../../lib/faye/websocket/hybi_parser')
 
-JS.ENV.Protocol8ParserSpec = JS.Test.describe("Protocol8Parser", function() { with(this) {
+JS.ENV.HybiParserSpec = JS.Test.describe("HybiParser", function() { with(this) {
   before(function() { with(this) {
     this.webSocket = {dispatchEvent: function() {}}
-    this.parser = new Protocol8Parser(webSocket)
+    this.parser = new HybiParser(webSocket)
   }})
   
   define("parse", function() {
