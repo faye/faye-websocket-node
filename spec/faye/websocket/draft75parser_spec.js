@@ -12,9 +12,20 @@ JS.ENV.Draft75ParserSpec = JS.Test.describe("Draft75Parser", function() { with(t
       parser.parse([0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff])
     }})
     
+    it("parses multiple frames from the same packet", function() { with(this) {
+      expect(webSocket, "receive").given("Hello").exactly(2)
+      parser.parse([0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff, 0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff])
+    }})
+    
     it("parses multibyte text frames", function() { with(this) {
       expect(webSocket, "receive").given("Apple = ")
       parser.parse([0x00, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf, 0xff])
+    }})
+    
+    it("parses frames received in several packets", function() { with(this) {
+      expect(webSocket, "receive").given("Apple = ")
+      parser.parse([0x00, 0x41, 0x70, 0x70, 0x6c, 0x65])
+      parser.parse([0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf, 0xff])
     }})
     
     it("parses fragmented frames", function() { with(this) {

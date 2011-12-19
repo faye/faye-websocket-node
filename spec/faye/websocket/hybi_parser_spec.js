@@ -38,6 +38,11 @@ JS.ENV.HybiParserSpec = JS.Test.describe("HybiParser", function() { with(this) {
       parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
     }})
     
+    it("parses multiple frames from the same packet", function() { with(this) {
+      expect(webSocket, "receive").given("Hello").exactly(2)
+      parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
+    }})
+    
     it("parses empty text frames", function() { with(this) {
       expect(webSocket, "receive").given("")
       parse([0x81, 0x00])
@@ -78,6 +83,12 @@ JS.ENV.HybiParserSpec = JS.Test.describe("HybiParser", function() { with(this) {
     it("parses unmasked multibyte text frames", function() { with(this) {
       expect(webSocket, "receive").given("Apple = ")
       parse([0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf])
+    }})
+    
+    it("parses frames received in several packets", function() { with(this) {
+      expect(webSocket, "receive").given("Apple = ")
+      parse([0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c])
+      parse([0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf])
     }})
     
     it("parses fragmented multibyte text frames", function() { with(this) {
