@@ -23,15 +23,14 @@ JS.ENV.Draft75ParserSpec = JS.Test.describe("Draft75Parser", function() { with(t
         parser.parse([0x66, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff])
       }})
       
-      it("parses text frames with a length header", function() { with(this) {
-        expect(webSocket, "receive").given("Hello")
+      it("ignores frames with a length header", function() { with(this) {
+        expect(webSocket, "receive").exactly(0)
         parser.parse([0x80, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
       }})
       
-      it("parses multiple text frames with a length header from the same packet", function() { with(this) {
+      it("parses text following an ignored block", function() { with(this) {
         expect(webSocket, "receive").given("Hello")
-        expect(webSocket, "receive").given("He")
-        parser.parse([0x80, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x80, 0x02, 0x48, 0x65])
+        parser.parse([0x80, 0x02, 0x48, 0x65, 0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff])
       }})
       
       it("parses multibyte text frames", function() { with(this) {
