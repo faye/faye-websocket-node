@@ -115,8 +115,8 @@ messages.
   sends a text or binary message over the connection to the other peer.
 * <b><tt>close(code, reason)</tt></b> closes the connection, sending the given
   status code and reason text, both of which are optional.
-* <b><tt>protocol</tt></b> is a string or `null` identifying the subprotocol the
-  socket is using.
+* <b><tt>protocol</tt></b> is a string (which may be empty) identifying the
+  subprotocol the socket is using.
 
 
 ## License
