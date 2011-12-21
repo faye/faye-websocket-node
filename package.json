@@ -4,10 +4,10 @@
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket"]
 
-, "version"         : "0.1.2"
+, "version"         : "0.2.0"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
-, "devDependencies" : {"jsclass": ">=3.0.4"}
+, "devDependencies" : {"jsclass": ""}
 
 , "bugs"            : "http://github.com/jcoglan/faye-websocket-node/issues"
 
