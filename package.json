@@ -1,6 +1,6 @@
 { "name"            : "faye-websocket"
 , "description"     : "Standards-compliant WebSocket server and client"
-, "homepage"        : "http://github.com/jcoglan/faye-websocket-node"
+, "homepage"        : "http://github.com/faye/faye-websocket-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket"]
 
@@ -9,7 +9,7 @@
 , "main"            : "./lib/faye/websocket"
 , "devDependencies" : {"jsclass": ""}
 
-, "bugs"            : "http://github.com/jcoglan/faye-websocket-node/issues"
+, "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
 
 , "licenses"        : [ { "type"    : "MIT"
                         , "url"     : "http://www.opensource.org/licenses/mit-license.php"
@@ -17,7 +17,7 @@
                       ]
 
 , "repositories"    : [ { "type"    : "git"
-                        , "url"     : "git://github.com/jcoglan/faye-websocket-node.git"
+                        , "url"     : "git://github.com/faye/faye-websocket-node.git"
                         }
                       ]
 }
