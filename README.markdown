@@ -49,8 +49,7 @@ server.listen(8000);
 
 The client supports both the plain-text `ws` protocol and the encrypted `wss`
 protocol, and has exactly the same interface as a socket you would use in a web
-browser. On the wire it identifies itself as hybi-13, though it's compatible
-with servers speaking later versions of the protocol.
+browser. On the wire it identifies itself as hybi-13.
 
 ```js
 var WebSocket = require('faye-websocket'),
