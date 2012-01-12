@@ -6,15 +6,18 @@ var WebSocket = require('../lib/faye/websocket'),
 var port   = process.argv[2] || 7000,
     secure = process.argv[3] === 'ssl';
 
-var staticHandler = function(request, response) {
-  var path = request.url;
+var upgradeHandler = function(request, socket, head) {
+  var ws = new WebSocket(request, socket, head, ['irc', 'xmpp']);
+  console.log('open', ws.url, ws.version, ws.protocol);
   
-  fs.readFile(__dirname + path, function(err, content) {
-    var status = err ? 404 : 200;
-    response.writeHead(status, {'Content-Type': 'text/html'});
-    response.write(content || 'Not found');
-    response.end();
-  });
+  ws.onmessage = function(event) {
+    ws.send(event.data);
+  };
+  
+  ws.onclose = function(event) {
+    console.log('close', event.code, event.reason);
+    ws = null;
+  };
 };
 
 var requestHandler = function(request, response) {
@@ -43,18 +46,15 @@ var requestHandler = function(request, response) {
   };
 };
 
-var upgradeHandler = function(request, socket, head) {
-  var ws = new WebSocket(request, socket, head, ['irc', 'xmpp']);
-  console.log('open', ws.url, ws.version, ws.protocol);
+var staticHandler = function(request, response) {
+  var path = request.url;
   
-  ws.onmessage = function(event) {
-    ws.send(event.data);
-  };
-  
-  ws.onclose = function(event) {
-    console.log('close', event.code, event.reason);
-    ws = null;
-  };
+  fs.readFile(__dirname + path, function(err, content) {
+    var status = err ? 404 : 200;
+    response.writeHead(status, {'Content-Type': 'text/html'});
+    response.write(content || 'Not found');
+    response.end();
+  });
 };
 
 var server = secure
