@@ -17,14 +17,33 @@ var staticHandler = function(request, response) {
   });
 };
 
-var server = secure
-           ? https.createServer({
-               key:  fs.readFileSync(__dirname + '/../spec/server.key'),
-               cert: fs.readFileSync(__dirname + '/../spec/server.crt')
-             })
-           : http.createServer(staticHandler);
+var requestHandler = function(request, response) {
+  if (!WebSocket.EventSource.isEventSource(request))
+    return staticHandler(request, response);
+  
+  var es   = new WebSocket.EventSource(request, response),
+      time = parseInt(es.lastEventId, 10) || 0;
+  
+  console.log('open', es.url, es.lastEventId);
+  
+  var loop = setInterval(function() {
+    time += 1;
+    es.send('Time: ' + time);
+    setTimeout(function() {
+      if (es) es.send('Update!!', {event: 'update', id: time});
+    }, 1000);
+  }, 2000);
+  
+  es.send('Welcome!\n\nThis is an EventSource server.');
+  
+  es.onclose = function() {
+    clearInterval(loop);
+    console.log('close', es.url);
+    es = null;
+  };
+};
 
-server.addListener('upgrade', function(request, socket, head) {
+var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp']);
   console.log('open', ws.url, ws.version, ws.protocol);
   
@@ -36,6 +55,16 @@ server.addListener('upgrade', function(request, socket, head) {
     console.log('close', event.code, event.reason);
     ws = null;
   };
-});
+};
 
+var server = secure
+           ? https.createServer({
+               key:  fs.readFileSync(__dirname + '/../spec/server.key'),
+               cert: fs.readFileSync(__dirname + '/../spec/server.crt')
+             })
+           : http.createServer();
+
+server.addListener('request', requestHandler);
+server.addListener('upgrade', upgradeHandler);
 server.listen(port);
+
