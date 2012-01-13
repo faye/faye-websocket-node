@@ -2,9 +2,9 @@
 , "description"     : "Standards-compliant WebSocket server and client"
 , "homepage"        : "http://github.com/faye/faye-websocket-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
-, "keywords"        : ["websocket"]
+, "keywords"        : ["websocket", "eventsource"]
 
-, "version"         : "0.2.0"
+, "version"         : "0.3.0"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
 , "devDependencies" : {"jsclass": ""}
