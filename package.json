@@ -4,7 +4,7 @@
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket", "eventsource"]
 
-, "version"         : "0.3.0"
+, "version"         : "0.3.1"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
 , "devDependencies" : {"jsclass": ""}

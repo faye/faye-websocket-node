@@ -1,3 +1,8 @@
+=== 0.3.1 / 2012-01-16
+
+* Call setNoDelay(true) on net.Socket objects to reduce latency
+
+
 === 0.3.0 / 2012-01-13
 
 * Add support for EventSource connections
