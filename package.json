@@ -9,6 +9,8 @@
 , "main"            : "./lib/faye/websocket"
 , "devDependencies" : {"jsclass": ""}
 
+, "scripts"         : {"test": "node spec/runner.js"}
+
 , "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
 
 , "licenses"        : [ { "type"    : "MIT"
