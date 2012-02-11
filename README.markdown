@@ -52,6 +52,16 @@ server.addListener('upgrade', function(request, socket, head) {
 server.listen(8000);
 ```
 
+Note that under certain circumstances (notably a draft-76 client connecting
+through an HTTP proxy), the WebSocket handshake will not be complete after you
+call `new WebSocket()` because the server will not have received the entire
+handshake from the client yet. In this case, calls to `ws.send()` will buffer
+the message in memory until the handshake is complete, at which point any
+buffered messages will be sent to the client.
+
+If you need to detect when the WebSocket handshake is complete, you can use the
+`onopen` event.
+
 
 ## Using the WebSocket client
 

@@ -10,9 +10,7 @@ var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp']);
   console.log('open', ws.url, ws.version, ws.protocol);
   
-  ws.onopen = function() {
-    ws.send('The server says hi.');
-  };
+  ws.send('The server says hi.');
   
   ws.onmessage = function(event) {
     ws.send(event.data);
