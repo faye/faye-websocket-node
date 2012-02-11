@@ -62,6 +62,17 @@ buffered messages will be sent to the client.
 If you need to detect when the WebSocket handshake is complete, you can use the
 `onopen` event.
 
+If the connection's protocol version supports it, you can call `ws.ping()` to
+send a ping message and wait for the client's response. This method takes a
+message string, and an optional callback that fires when a matching pong message
+is received. If the client does not support ping/pong, this method does nothing.
+
+```js
+ws.ping('Mic check, one, two', function() {
+  // fires when pong is received
+});
+```
+
 
 ## Using the WebSocket client
 
@@ -205,6 +216,10 @@ retryable every 10 seconds if the connection is broken:
 ```js
 var es = new EventSource(request, response, {ping: 15, retry: 10});
 ```
+
+You can send a ping message at any time by calling `es.ping()`. Unlike WebSocket,
+the client does not send a response to this; it is merely to send some data over
+the wire to keep the connection alive.
 
 
 ## License
