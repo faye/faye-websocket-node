@@ -60,13 +60,13 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
     callback()
   },
   
-  send_message: function(callback) {
-    this._ws.send("I expect this to be echoed")
+  send_message: function(message, callback) {
+    this._ws.send(message)
     setTimeout(callback, 100)
   },
   
-  check_response: function(callback) {
-    this.assertEqual( "I expect this to be echoed", this._message )
+  check_response: function(message, callback) {
+    this.assertEqual( message, this._message )
     callback()
   },
   
@@ -116,8 +116,14 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
       
       it("can send and receive messages", function() { with(this) {
         listen_for_message()
-        send_message()
-        check_response()
+        send_message("I expect this to be echoed")
+        check_response("I expect this to be echoed")
+      }})
+      
+      it("sends numbers as strings", function() { with(this) {
+        listen_for_message()
+        send_message(13)
+        check_response("13")
       }})
     }})
     
@@ -129,7 +135,7 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
       
       it("cannot send and receive messages", function() { with(this) {
         listen_for_message()
-        send_message()
+        send_message("I expect this to be echoed")
         check_no_response()
       }})
     }})
