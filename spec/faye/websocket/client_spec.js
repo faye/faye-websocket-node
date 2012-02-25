@@ -125,6 +125,18 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
         send_message(13)
         check_response("13")
       }})
+      
+      it("sends booleans as strings", function() { with(this) {
+        listen_for_message()
+        send_message(false)
+        check_response("false")
+      }})
+      
+      it("sends arrays as strings", function() { with(this) {
+        listen_for_message()
+        send_message([13,14,15])
+        check_response("13,14,15")
+      }})
     }})
     
     describe("in the CLOSED state", function() { with(this) {
