@@ -1,3 +1,8 @@
+=== 0.4.1 / 2012-02-26
+
+* Treat anything other than a Buffer as a string when calling send()
+
+
 === 0.4.0 / 2012-02-13
 
 * Add ping() method to server-side WebSocket and EventSource
