@@ -4,7 +4,7 @@
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket", "eventsource"]
 
-, "version"         : "0.4.2"
+, "version"         : "0.4.3"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
 , "devDependencies" : {"jsclass": ""}
@@ -13,13 +13,13 @@
 
 , "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
 
-, "licenses"        : [ { "type"    : "MIT"
-                        , "url"     : "http://www.opensource.org/licenses/mit-license.php"
+, "licenses"        : [ { "type"  : "MIT"
+                        , "url"   : "http://www.opensource.org/licenses/mit-license.php"
                         }
                       ]
 
-, "repositories"    : [ { "type"    : "git"
-                        , "url"     : "git://github.com/faye/faye-websocket-node.git"
+, "repositories"    : [ { "type"  : "git"
+                        , "url"   : "git://github.com/faye/faye-websocket-node.git"
                         }
                       ]
 }
