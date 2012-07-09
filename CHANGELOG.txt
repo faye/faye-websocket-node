@@ -1,3 +1,9 @@
+=== 0.4.3 / 2012-07-09
+
+* Add 'Connection: close' to EventSource response
+* Handle situations where request.socket is undefined
+
+
 === 0.4.2 / 2012-04-06
 
 * Add WebSocket error code 1011.
