@@ -7,7 +7,7 @@
 , "version"         : "0.4.3"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
-, "devDependencies" : {"jsclass": ""}
+, "devDependencies" : {"jsclass": "", "pace": ""}
 
 , "scripts"         : {"test": "node spec/runner.js"}
 
