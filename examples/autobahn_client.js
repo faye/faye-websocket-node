@@ -2,7 +2,7 @@ var WebSocket = require('../lib/faye/websocket'),
     pace      = require('pace');
 
 var host  = 'ws://localhost:9001',
-    agent = 'Faye (Node ' + process.version + ')',
+    agent = 'Node ' + process.version,
     cases = 0,
     skip  = [];
 
@@ -21,7 +21,7 @@ socket.onclose = function() {
 
     if (n > cases) {
       socket = new WebSocket.Client(host + '/updateReports?agent=' + encodeURIComponent(agent));
-      socket.onclose = process.exit
+      socket.onclose = process.exit;
 
     } else if (skip.indexOf(n) >= 0) {
       runCase(n + 1);
