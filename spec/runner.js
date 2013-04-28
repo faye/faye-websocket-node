@@ -46,9 +46,6 @@ JS.require('JS.Test', function() {
   })
 
   JS.require( 'ClientSpec',
-              'Draft75ParserSpec',
-              'Draft76ParserSpec',
-              'HybiParserSpec',
               JS.Test.method('autorun'))
 })
 
