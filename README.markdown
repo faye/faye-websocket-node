@@ -69,7 +69,9 @@ server.on('upgrade', function(request, socket, head) {
 ### Client-side
 
 Similarly, to implement a WebSocket client you just need to make a handler by
-passing in a URL:
+passing in a URL. After this you use the handler API as described below to
+process incoming data and send outgoing data.
+
 
 ```js
 var net = require('net'),
@@ -89,9 +91,6 @@ tcp.on('connect', function() {
   handler.start();
 });
 ```
-
-After this you use the handler API as described below to process incoming data
-and send outgoing data.
 
 
 ### Handler API
