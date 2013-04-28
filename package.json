@@ -1,17 +1,17 @@
-{ "name"            : "faye-websocket"
-, "description"     : "Standards-compliant WebSocket server and client"
-, "homepage"        : "http://github.com/faye/faye-websocket-node"
+{ "name"            : "websocket-protocol"
+, "description"     : "WebSocket protocol handler with pluggable I/O"
+, "homepage"        : "http://github.com/faye/websocket-protocol-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
-, "keywords"        : ["websocket", "eventsource"]
+, "keywords"        : ["websocket"]
 
-, "version"         : "0.4.4"
+, "version"         : "0.1.0"
 , "engines"         : {"node": ">=0.4.0"}
-, "main"            : "./lib/faye/websocket"
-, "devDependencies" : {"jsclass": "", "pace": ""}
+, "main"            : "./lib/websocket/protocol"
+, "devDependencies" : {"jsclass": ""}
 
 , "scripts"         : {"test": "node spec/runner.js"}
 
-, "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
+, "bugs"            : "http://github.com/faye/websocket-protocol-node/issues"
 
 , "licenses"        : [ { "type"  : "MIT"
                         , "url"   : "http://www.opensource.org/licenses/mit-license.php"
@@ -19,7 +19,7 @@
                       ]
 
 , "repositories"    : [ { "type"  : "git"
-                        , "url"   : "git://github.com/faye/faye-websocket-node.git"
+                        , "url"   : "git://github.com/faye/websocket-protocol-node.git"
                         }
                       ]
 }
