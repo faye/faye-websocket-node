@@ -17,9 +17,7 @@ EchoServer.prototype.listen = function(port, ssl) {
 
   server.addListener('upgrade', function(request, socket, head) {
     var ws = new WebSocket(request, socket, head, ["echo"])
-    ws.onmessage = function(event) {
-      ws.send(event.data)
-    }
+    ws.pipe(ws)
   })
   this._httpServer = server
   server.listen(port)
@@ -32,11 +30,6 @@ EchoServer.prototype.stop = function(callback, scope) {
 }
 
 
-JS.Packages(function() { with(this) {
-  autoload(/.*Spec/, {from: 'spec/faye/websocket'})
-}})
-
-
 JS.require('JS.Test', function() {
   JS.Test.Unit.Assertions.define("assertBufferEqual", function(array, buffer) {
     this.assertEqual(array.length, buffer.length);
@@ -45,7 +38,7 @@ JS.require('JS.Test', function() {
     this.assertEqual(array, ary);
   })
 
-  JS.require( 'ClientSpec',
-              JS.Test.method('autorun'))
+  require('./faye/websocket/client_spec')
+  JS.Test.autorun()
 })
 
