@@ -1,6 +1,5 @@
 .git
 .gitignore
 .npmignore
-.redcar
 .travis.yml
 node_modules
