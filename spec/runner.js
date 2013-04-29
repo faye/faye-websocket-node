@@ -37,6 +37,7 @@ JS.require('JS.Test', function() {
     }
   })
 
+  require('./websocket/protocol/draft75_spec')
   require('./websocket/protocol/hybi_spec')
   require('./websocket/protocol/client_spec')
   JS.Test.autorun()
