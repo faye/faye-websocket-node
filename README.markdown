@@ -115,12 +115,12 @@ following fields:
 
 A handler has two duplex streams attached to it:
 
-* __`handler.io`__ - this stream should be attached to an I/O socket like a TCP
+* `handler.io` - this stream should be attached to an I/O socket like a TCP
   stream. Pipe incoming TCP chunks to this stream for them to be parsed, and
   pipe this stream back into TCP to send outgoing frames.
-* __`handler.messages`__ - this stream emits messages received over the
-  WebSocket.  Writing to it sends messages to the other peer by emitting frames
-  via the `handler.io` stream.
+* `handler.messages` - this stream emits messages received over the WebSocket.
+  Writing to it sends messages to the other peer by emitting frames via the
+  `handler.io` stream.
 
 All handlers respond to the following API methods, but some of them are no-ops
 depending on whether the client supports the behaviour.
