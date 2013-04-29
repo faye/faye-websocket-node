@@ -66,7 +66,7 @@ server.on('upgrade', function(request, socket, body) {
 };
 ```
 
-Node the final line - you must pass the `body` buffer to the socket handler in
+Note the final line - you must pass the `body` buffer to the socket handler in
 order to make certain versions of the protocol work.
 
 
