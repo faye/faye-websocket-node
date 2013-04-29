@@ -113,6 +113,8 @@ following fields:
   use over the socket. The handler will negotiate one of these to use via the
   `Sec-WebSocket-Protocol` header if supported by the other peer.
 
+#### Streams
+
 A handler has two duplex streams attached to it:
 
 * `handler.io` - this stream should be attached to an I/O socket like a TCP
