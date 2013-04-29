@@ -22,8 +22,7 @@ JS.Test.describe("Draft75", function() { with(this) {
     this._protocol.onopen   (function(e) { self.open = true })
     this._protocol.onmessage(function(e) { self.message += e.data })
     this._protocol.onclose  (function(e) { self.close = true })
-    var collector = this.collector()
-    this._protocol.io.on("data", function(d) { collector.write(d) })
+    this._protocol.io.pipe(this.collector())
     return this._protocol
   })
 

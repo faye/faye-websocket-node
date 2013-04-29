@@ -18,6 +18,7 @@ BufferMatcher.prototype.equals = function(other) {
 
 var Collector = function() {
   this.bytes = []
+  this.writable = true
 }
 util.inherits(Collector, Stream)
 Collector.prototype.write = function(buffer) {
@@ -25,6 +26,7 @@ Collector.prototype.write = function(buffer) {
   for (var i = 0, n = buffer.length; i < n; i++) {
     this.bytes[i] = buffer[i]
   }
+  return true
 }
 
 JS.require('JS.Test', function() {
@@ -39,6 +41,7 @@ JS.require('JS.Test', function() {
 
   require('./websocket/protocol/draft75_examples')
   require('./websocket/protocol/draft75_spec')
+  require('./websocket/protocol/draft76_spec')
   require('./websocket/protocol/hybi_spec')
   require('./websocket/protocol/client_spec')
   JS.Test.autorun()
