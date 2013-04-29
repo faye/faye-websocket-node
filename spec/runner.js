@@ -31,13 +31,6 @@ EchoServer.prototype.stop = function(callback, scope) {
 
 
 JS.require('JS.Test', function() {
-  JS.Test.Unit.Assertions.define("assertBufferEqual", function(array, buffer) {
-    this.assertEqual(array.length, buffer.length);
-    var ary = [], n = buffer.length;
-    while (n--) ary[n] = buffer[n];
-    this.assertEqual(array, ary);
-  })
-
   require('./faye/websocket/client_spec')
   JS.Test.autorun()
 })
