@@ -30,7 +30,7 @@ project.
 
 ## Usage
 
-This module provies protocol handlers that have the same interface on the
+This module provides protocol handlers that have the same interface on the
 server and on the client. A WebSocket handler is an object with two duplex
 streams attached; one for incoming/outgoing messages and one for managing the
 wire protocol over an I/O stream. The full API is described below.
@@ -106,8 +106,8 @@ The `http` method returns a handler chosen using the headers from a Node HTTP
 request object. The `client` method always returns a handler for the RFC
 version of the protocol with masking enabled on outgoing frames.
 
-The `options` argument is optional, and is a hash. It may contain the following
-keys:
+The `options` argument is optional, and is an object. It may contain the
+following fields:
 
 * `protocols` - an array of strings representing acceptable subprotocols for
   use over the socket. The handler will negotiate one of these to use via the
@@ -115,12 +115,12 @@ keys:
 
 A handler has two duplex streams attached to it:
 
-* `handler.io` - this stream should be attached to an I/O socket like a TCP
+* __`handler.io`__ - this stream should be attached to an I/O socket like a TCP
   stream. Pipe incoming TCP chunks to this stream for them to be parsed, and
   pipe this stream back into TCP to send outgoing frames.
-* `handler.messages` - this stream emits messages received over the WebSocket.
-  Writing to it sends messages to the other peer by emitting frames via the
-  `handler.io` stream.
+* __`handler.messages`__ - this stream emits messages received over the
+  WebSocket.  Writing to it sends messages to the other peer by emitting frames
+  via the `handler.io` stream.
 
 All handlers respond to the following API methods, but some of them are no-ops
 depending on whether the client supports the behaviour.
@@ -131,21 +131,21 @@ on the `handler.io` stream.
 
 #### `handler.onopen(function(event) {})`
 
-Sets the handler block to execute when the socket becomes open.
+Sets the callback to execute when the socket becomes open.
 
 #### `handler.onmessage(function(event) {})`
 
-Sets the handler block to execute when a message is received. `event` will have
-a `data` attribute containing either a string in the case of a text message or
-an array of integers in the case of a binary message.
+Sets the callback to execute when a message is received. `event` will have a
+`data` attribute containing either a string in the case of a text message or a
+`Buffer` in the case of a binary message.
 
 You can also listen for messages using the `handler.messages.on('data')` event,
 which emits strings for text messages and buffers for binary messages.
 
 #### `handler.onclose(function(event) {})`
 
-Sets the handler block to execute when the socket becomes closed. The `event`
-object has `code` and `reason` attributes.
+Sets the callback to execute when the socket becomes closed. The `event` object
+has `code` and `reason` attributes.
 
 #### `handler.start()`
 
@@ -179,10 +179,9 @@ This method is equivalent to `handler.messages.write(buffer)`.
 #### `handler.ping(string = '', function() {})`
 
 Sends a ping frame over the socket, queueing it if necessary. `string` and the
-`callback` block are both optional. If a callback is given, it will be invoked
-when the socket receives a pong frame whose content matches `string`. Returns
-`false` if frames can no longer be sent, or if the handler does not support
-ping/pong.
+callback are both optional. If a callback is given, it will be invoked when the
+socket receives a pong frame whose content matches `string`. Returns `false` if
+frames can no longer be sent, or if the handler does not support ping/pong.
 
 #### `handler.close()`
 
