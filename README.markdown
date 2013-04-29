@@ -50,7 +50,7 @@ var http = require('http'),
 var server = http.createServer();
 
 server.on('upgrade', function(request, socket, head) {
-  if (!protocol.isWebSocket(request)) return;
+  if (!websocket.isWebSocket(request)) return;
 
   var handler = websocket.http(request);
 
