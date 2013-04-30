@@ -54,6 +54,7 @@ server.on('upgrade', function(request, socket, body) {
 
   var handler = websocket.http(request);
 
+  handler.io.write(body);
   socket.pipe(handler.io);
   handler.io.pipe(socket);
 
@@ -62,12 +63,11 @@ server.on('upgrade', function(request, socket, body) {
   });
 
   handler.start();
-  handler.io.write(body);
 };
 ```
 
-Note the final line - you must pass the `body` buffer to the socket handler in
-order to make certain versions of the protocol work.
+Note the line `handler.io.write(body)` - you must pass the `body` buffer to the
+socket handler in order to make certain versions of the protocol work.
 
 
 ### Client-side
