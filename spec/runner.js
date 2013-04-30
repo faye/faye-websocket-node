@@ -1,6 +1,6 @@
 require('jsclass')
 
-var Stream = require('stream'),
+var Stream = require('stream').Stream,
     util   = require('util')
 
 var BufferMatcher = function(data) {
