@@ -78,7 +78,7 @@ JS.Test.describe("Draft76", function() { with(this) {
 
       it("sets the protocol version", function() { with(this) {
         protocol().start()
-        assertEqual( "hixie-76", protocol().getVersion() )
+        assertEqual( "hixie-76", protocol().version )
       }})
     }})
 

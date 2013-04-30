@@ -89,7 +89,7 @@ JS.Test.describe("Hybi", function() { with(this) {
 
       it("sets the protocol version", function() { with(this) {
         protocol().start()
-        assertEqual( "hybi-13", protocol().getVersion() )
+        assertEqual( "hybi-13", protocol().version )
       }})
     }})
 

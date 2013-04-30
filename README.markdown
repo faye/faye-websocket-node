@@ -197,7 +197,7 @@ no closing handshake, this will result in the immediate execution of the
 closing frame and `emit('close')` will execute when a response is received or a
 protocol error occurs.
 
-#### `handler.getVersion()`
+#### `handler.version`
 
 Returns the WebSocket version in use as a string. Will either be `hixie-75`,
 `hixie-76` or `hybi-$version`.
