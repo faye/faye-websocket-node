@@ -31,9 +31,9 @@ JS.Test.describe("Draft76", function() { with(this) {
     if (this._protocol) return this._protocol
     this._protocol = new Draft76(this.request(), "ws://www.example.com/socket", this.options())
     var self = this
-    this._protocol.onopen   (function(e) { self.open = true })
-    this._protocol.onmessage(function(e) { self.message += e.data })
-    this._protocol.onclose  (function(e) { self.close = true })
+    this._protocol.on('open',    function(e) { self.open = true })
+    this._protocol.on('message', function(e) { self.message += e.data })
+    this._protocol.on('close',   function(e) { self.close = true })
     this._protocol.io.pipe(this.collector())
     this._protocol.io.write(this.body())
     return this._protocol

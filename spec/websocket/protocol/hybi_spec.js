@@ -22,9 +22,9 @@ JS.Test.describe("Hybi", function() { with(this) {
     if (this._protocol) return this._protocol
     this._protocol = new Hybi(this.request(), "ws://www.example.com/socket", this.options())
     var self = this
-    this._protocol.onopen   (function(e) { self.open = true })
-    this._protocol.onmessage(function(e) { self.message += e.data })
-    this._protocol.onclose  (function(e) { self.close = [e.code, e.reason] })
+    this._protocol.on('open',    function(e) { self.open = true })
+    this._protocol.on('message', function(e) { self.message += e.data })
+    this._protocol.on('close',   function(e) { self.close = [e.code, e.reason] })
     this._protocol.io.pipe(this.collector())
     return this._protocol
   })

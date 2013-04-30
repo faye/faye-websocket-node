@@ -135,11 +135,11 @@ Note that most of these methods are commands: if they produce data that should
 be sent over the socket, they will give this to you by emitting `data` events
 on the `handler.io` stream.
 
-#### `handler.onopen(function(event) {})`
+#### `handler.on('open', function(event) {})`
 
 Sets the callback to execute when the socket becomes open.
 
-#### `handler.onmessage(function(event) {})`
+#### `handler.on('message', function(event) {})`
 
 Sets the callback to execute when a message is received. `event` will have a
 `data` attribute containing either a string in the case of a text message or a
@@ -148,7 +148,7 @@ Sets the callback to execute when a message is received. `event` will have a
 You can also listen for messages using the `handler.messages.on('data')` event,
 which emits strings for text messages and buffers for binary messages.
 
-#### `handler.onclose(function(event) {})`
+#### `handler.on('close', function(event) {})`
 
 Sets the callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
@@ -162,7 +162,7 @@ first method you invoke.  Returns `true` iff a handshake was sent.
 #### `handler.parse(string)`
 
 Takes a string and parses it, potentially resulting in message events being
-emitted (see `onmessage` above) or in data being sent to `handler.io`.  You
+emitted (see `on('message')` above) or in data being sent to `handler.io`.  You
 should send all data you receive via I/O to this method by piping a stream into
 `handler.io`.
 
@@ -193,9 +193,9 @@ frames can no longer be sent, or if the handler does not support ping/pong.
 
 Initiates the closing handshake if the socket is still open. For handlers with
 no closing handshake, this will result in the immediate execution of the
-`onclose` handler. For handlers with a closing handshake, this sends a closing
-frame and `onclose` will execute when a response is received or a protocol
-error occurs.
+`on('close')` handler. For handlers with a closing handshake, this sends a
+closing frame and `emit('close')` will execute when a response is received or a
+protocol error occurs.
 
 #### `handler.getVersion()`
 
@@ -206,7 +206,7 @@ Returns the WebSocket version in use as a string. Will either be `hixie-75`,
 
 Returns a string containing the selected subprotocol, if any was agreed upon
 using the `Sec-WebSocket-Protocol` mechanism. This value becomes available
-after `onopen` has fired.
+after `emit('open')` has fired.
 
 
 ## License
