@@ -62,7 +62,7 @@ var server = secure
              })
            : http.createServer();
 
-server.addListener('request', requestHandler);
-server.addListener('upgrade', upgradeHandler);
+server.on('request', requestHandler);
+server.on('upgrade', upgradeHandler);
 server.listen(port);
 

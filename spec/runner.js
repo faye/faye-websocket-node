@@ -15,7 +15,7 @@ EchoServer.prototype.listen = function(port, ssl) {
                })
              : http.createServer()
 
-  server.addListener('upgrade', function(request, socket, head) {
+  server.on('upgrade', function(request, socket, head) {
     var ws = new WebSocket(request, socket, head, ["echo"])
     ws.pipe(ws)
   })
@@ -23,7 +23,7 @@ EchoServer.prototype.listen = function(port, ssl) {
   server.listen(port)
 }
 EchoServer.prototype.stop = function(callback, scope) {
-  this._httpServer.addListener('close', function() {
+  this._httpServer.on('close', function() {
     if (callback) callback.call(scope);
   });
   this._httpServer.close();
