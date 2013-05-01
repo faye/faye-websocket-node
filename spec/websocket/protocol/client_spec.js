@@ -1,6 +1,6 @@
 var Client = require("../../../lib/websocket/protocol/client")
 
-JS.Test.describe("Hybi", function() { with(this) {
+JS.Test.describe("Client", function() { with(this) {
     define("options", function() {
     return this._options = this._options || {protocols: this.protocols()}
   })
