@@ -15,6 +15,7 @@ JS.Test.describe("Client", function() { with(this) {
     var self = this
     this._protocol.on('open',    function(e) { self.open = true })
     this._protocol.on('message', function(e) { self.message += e.data })
+    this._protocol.on('error',   function(e) { self.error = e })
     this._protocol.on('close',   function(e) { self.close = [e.code, e.reason] })
     var collector = this.collector()
     this._protocol.io.on("data", function(d) { collector.write(d) })
@@ -35,7 +36,7 @@ JS.Test.describe("Client", function() { with(this) {
 
   before(function() {
     this.stub(Client, "generateKey").returns(this.key())
-    this.open = this.close = false
+    this.open = this.error = this.close = false
     this.message = ""
   })
 
@@ -125,7 +126,8 @@ JS.Test.describe("Client", function() { with(this) {
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
-        assertEqual( [1002, ""], close )
+        assertEqual( "Error during WebSocket handshake: 'Upgrade' header value is not 'WebSocket'", error.message )
+        assertEqual( [1002, "Error during WebSocket handshake: 'Upgrade' header value is not 'WebSocket'"], close )
         assertEqual( "closed", protocol().getState() )
       }})
     }})
@@ -138,7 +140,8 @@ JS.Test.describe("Client", function() { with(this) {
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
-        assertEqual( [1002, ""], close )
+        assertEqual( "Error during WebSocket handshake: Sec-WebSocket-Accept mismatch", error.message )
+        assertEqual( [1002, "Error during WebSocket handshake: Sec-WebSocket-Accept mismatch"], close )
         assertEqual( "closed", protocol().getState() )
       }})
     }})
@@ -172,7 +175,8 @@ JS.Test.describe("Client", function() { with(this) {
 
       it("changs the state to closed", function() { with(this) {
         assertEqual( false, open )
-        assertEqual( [1002, ""], close )
+        assertEqual( "Error during WebSocket handshake: Sec-WebSocket-Protocol mismatch", error.message )
+        assertEqual( [1002, "Error during WebSocket handshake: Sec-WebSocket-Protocol mismatch"], close )
         assertEqual( "closed", protocol().getState() )
       }})
 

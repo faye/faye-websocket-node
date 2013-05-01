@@ -24,13 +24,14 @@ JS.Test.describe("Hybi", function() { with(this) {
     var self = this
     this._protocol.on('open',    function(e) { self.open = true })
     this._protocol.on('message', function(e) { self.message += e.data })
+    this._protocol.on('error',   function(e) { self.error = e })
     this._protocol.on('close',   function(e) { self.close = [e.code, e.reason] })
     this._protocol.io.pipe(this.collector())
     return this._protocol
   })
 
   before(function() {
-    this.open = this.close = false
+    this.open = this.error = this.close = false
     this.message = ""
   })
 
@@ -229,8 +230,9 @@ JS.Test.describe("Hybi", function() { with(this) {
 
       it("closes the socket if the frame has an unrecognized opcode", function() { with(this) {
         protocol().parse([0x83, 0x00])
-        assertEqual( [0x88, 0x02, 0x03, 0xea], collector().bytes )
-        assertEqual( [1002, ""], close )
+        assertEqual( [0x88, 0x1e, 0x03, 0xea], collector().bytes.slice(0,4) )
+        assertEqual( "Unrecognized frame opcode: 3", error.message )
+        assertEqual( [1002, "Unrecognized frame opcode: 3"], close )
         assertEqual( "closed", protocol().getState() )
       }})
 
@@ -382,6 +384,11 @@ JS.Test.describe("Hybi", function() { with(this) {
         assertEqual( false, close )
       }})
 
+      it("does not trigger the onerror event", function() { with(this) {
+        protocol().close()
+        assertEqual( false, error )
+      }})
+
       it("changes the state to closing", function() { with(this) {
         protocol().close()
         assertEqual( "closing", protocol().getState() )
@@ -402,7 +409,8 @@ JS.Test.describe("Hybi", function() { with(this) {
 
     it("returns an error", function() { with(this) {
       protocol().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-      assertEqual( [1003, ""], close )
+      assertEqual( "Received unmasked frame but masking is required", error.message )
+      assertEqual( [1003, "Received unmasked frame but masking is required"], close )
     }})
   }})
 

@@ -148,6 +148,12 @@ Sets the callback to execute when a message is received. `event` will have a
 You can also listen for messages using the `handler.messages.on('data')` event,
 which emits strings for text messages and buffers for binary messages.
 
+#### `handler.on('error', function(event) {})`
+
+Sets the callback to execute when a protocol error occurs due to the other peer
+sending an invalid byte sequence. `event` will have a `message` attribute
+describing the error.
+
 #### `handler.on('close', function(event) {})`
 
 Sets the callback to execute when the socket becomes closed. The `event` object
