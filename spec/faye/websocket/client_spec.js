@@ -82,8 +82,9 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
 
   before(function() {
     this.protocols       = ["foo", "echo"]
-    this.plain_text_url  = "ws://localhost:8000/bayeux"
-    this.secure_url      = "wss://localhost:8000/bayeux"
+    this.plain_text_url  = "ws://localhost:4180/bayeux"
+    this.secure_url      = "wss://localhost:4180/bayeux"
+    this.port            = 4180
   })
 
   sharedBehavior("socket client", function() { with(this) {
@@ -154,7 +155,7 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
       this.blocked_url = this.secure_url
     })
 
-    before(function() { this.server(8000, false) })
+    before(function() { this.server(4180, false) })
     after (function() { this.stop() })
 
     behavesLike("socket client")
@@ -166,7 +167,7 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
       this.blocked_url = this.plain_text_url
     })
 
-    before(function() { this.server(8000, true) })
+    before(function() { this.server(4180, true) })
     after (function() { this.stop() })
 
     behavesLike("socket client")
