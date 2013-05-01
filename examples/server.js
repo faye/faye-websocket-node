@@ -35,7 +35,7 @@ var requestHandler = function(request, response) {
     }, 1000);
   }, 2000);
 
-  es.send('Welcome!\n\nThis is an EventSource server.');
+  fs.createReadStream(__dirname + '/haproxy.conf').pipe(es);
 
   es.onclose = function() {
     clearInterval(loop);
