@@ -94,11 +94,6 @@ JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
       check_protocol("echo")
     }})
 
-    it("cannot open a connection with unacceptable protocols", function() { with(this) {
-      open_socket(socket_url, ["foo"])
-      check_closed()
-    }})
-
     it("can close the connection", function() { with(this) {
       open_socket(socket_url, protocols)
       close_socket()
