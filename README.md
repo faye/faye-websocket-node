@@ -40,7 +40,9 @@ var WebSocket = require('faye-websocket'),
 
 var server = http.createServer();
 
-server.addListener('upgrade', function(request, socket, head) {
+server.on('upgrade', function(request, socket, head) {
+  if (!WebSocket.isWebSocket(request)) return;
+
   var ws = new WebSocket(request, socket, head);
   
   ws.on('message', function(event) {
@@ -170,7 +172,7 @@ var WebSocket   = require('faye-websocket'),
 
 var server = http.createServer();
 
-server.addListener('request', function(request, response) {
+server.on('request', function(request, response) {
   if (EventSource.isEventSource(request)) {
     var es = new EventSource(request, response);
     console.log('open', es.url, es.lastEventId);
