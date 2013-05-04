@@ -28,14 +28,8 @@ socket.onclose = function() {
 
     } else {
       socket = new WebSocket.Client(host + '/runCase?case=' + n + '&agent=' + encodeURIComponent(agent));
-
-      socket.onmessage = function(event) {
-        socket.send(event.data);
-      };
-
-      socket.onclose = function() {
-        runCase(n + 1);
-      };
+      socket.pipe(socket);
+      socket.on('close', function() { runCase(n + 1) });
     }
   };
 
