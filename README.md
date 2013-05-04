@@ -117,16 +117,14 @@ following fields:
   use over the socket. The handler will negotiate one of these to use via the
   `Sec-WebSocket-Protocol` header if supported by the other peer.
 
-#### Streams
-
 A handler has two duplex streams attached to it:
 
-* `handler.io` - this stream should be attached to an I/O socket like a TCP
-  stream. Pipe incoming TCP chunks to this stream for them to be parsed, and
-  pipe this stream back into TCP to send outgoing frames.
-* `handler.messages` - this stream emits messages received over the WebSocket.
-  Writing to it sends messages to the other peer by emitting frames via the
-  `handler.io` stream.
+* <b>`handler.io`</b> - this stream should be attached to an I/O socket like a
+  TCP stream. Pipe incoming TCP chunks to this stream for them to be parsed,
+  and pipe this stream back into TCP to send outgoing frames.
+* <b>`handler.messages`</b> - this stream emits messages received over the
+  WebSocket.  Writing to it sends messages to the other peer by emitting frames
+  via the `handler.io` stream.
 
 All handlers respond to the following API methods, but some of them are no-ops
 depending on whether the client supports the behaviour.
@@ -219,7 +217,7 @@ after `emit('open')` has fired.
 
 (The MIT License)
 
-Copyright (c) 2009-2013 James Coglan
+Copyright (c) 2010-2013 James Coglan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the 'Software'), to deal in
