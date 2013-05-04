@@ -40,9 +40,9 @@ var WebSocket = require('faye-websocket'),
 
 var server = http.createServer();
 
-server.on('upgrade', function(request, socket, head) {
+server.on('upgrade', function(request, socket, body) {
   if (WebSocket.isWebSocket(request)) {
-    var ws = new WebSocket(request, socket, head);
+    var ws = new WebSocket(request, socket, body);
     
     ws.on('message', function(event) {
       ws.send(event.data);
@@ -53,10 +53,6 @@ server.on('upgrade', function(request, socket, head) {
       ws = null;
     });
 
-  } else {
-    // Normal HTTP request
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end('Hello');
   }
 });
 
@@ -128,7 +124,7 @@ On the server side, you can likewise pass in the list of protocols the server
 supports after the other constructor arguments:
 
 ```js
-var ws = new WebSocket(request, socket, head, ['irc', 'amqp']);
+var ws = new WebSocket(request, socket, body, ['irc', 'amqp']);
 ```
 
 If the client and server agree on a protocol, both the client- and server-side
