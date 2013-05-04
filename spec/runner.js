@@ -39,11 +39,11 @@ JS.require('JS.Test', function() {
     }
   })
 
-  require('./websocket/protocol/draft75_examples')
-  require('./websocket/protocol/draft75_spec')
-  require('./websocket/protocol/draft76_spec')
-  require('./websocket/protocol/hybi_spec')
-  require('./websocket/protocol/client_spec')
+  require('./websocket/driver/draft75_examples')
+  require('./websocket/driver/draft75_spec')
+  require('./websocket/driver/draft76_spec')
+  require('./websocket/driver/hybi_spec')
+  require('./websocket/driver/client_spec')
   JS.Test.autorun()
 })
 

@@ -1,4 +1,4 @@
-# websocket-protocol [![Build Status](https://travis-ci.org/faye/websocket-protocol-node.png)](https://travis-ci.org/faye/websocket-protocol-node)
+# websocket-driver [![Build Status](https://travis-ci.org/faye/websocket-driver-node.png)](https://travis-ci.org/faye/websocket-driver-node)
 
 This module provides a complete implementation of the WebSocket protocols that
 can be hooked up to any I/O stream. It aims to simplify things by decoupling
@@ -10,7 +10,7 @@ pluggable I/O.
 Due to this design, you get a lot of things for free. In particular, if you
 hook this module up to some I/O object, it will do all of this for you:
 
-* Select the correct server-side protocol handler to talk to the client
+* Select the correct server-side driver to talk to the client
 * Generate and send both server- and client-side handshakes
 * Recognize when the handshake phase completes and the WS protocol begins
 * Negotiate subprotocol selection based on `Sec-WebSocket-Protocol`
@@ -31,14 +31,14 @@ project.
 ## Installation
 
 ```
-$ npm install websocket-protocol
+$ npm install websocket-driver
 ```
 
 
 ## Usage
 
-This module provides protocol handlers that have the same interface on the
-server and on the client. A WebSocket handler is an object with two duplex
+This module provides protocol drivers that have the same interface on the
+server and on the client. A WebSocket driver is an object with two duplex
 streams attached; one for incoming/outgoing messages and one for managing the
 wire protocol over an I/O stream. The full API is described below.
 
@@ -47,173 +47,173 @@ wire protocol over an I/O stream. The full API is described below.
 
 A Node webserver emits a special event for 'upgrade' requests, and this is
 where you should handle WebSockets. You first check whether the request is a
-WebSocket, and if so you can create a handler and attach the request's I/O
+WebSocket, and if so you can create a driver and attach the request's I/O
 stream to it.
 
 ```js
 var http = require('http'),
-    websocket = require('websocket-protocol');
+    websocket = require('websocket-driver');
 
 var server = http.createServer();
 
 server.on('upgrade', function(request, socket, body) {
   if (!websocket.isWebSocket(request)) return;
 
-  var handler = websocket.http(request);
+  var driver = websocket.http(request);
 
-  handler.io.write(body);
-  socket.pipe(handler.io);
-  handler.io.pipe(socket);
+  driver.io.write(body);
+  socket.pipe(driver.io);
+  driver.io.pipe(socket);
 
-  handler.messages.on('data', function(message) {
+  driver.messages.on('data', function(message) {
     console.log('Got a message', message);
   });
 
-  handler.start();
+  driver.start();
 };
 ```
 
-Note the line `handler.io.write(body)` - you must pass the `body` buffer to the
-socket handler in order to make certain versions of the protocol work.
+Note the line `driver.io.write(body)` - you must pass the `body` buffer to the
+socket driver in order to make certain versions of the protocol work.
 
 
 ### Client-side
 
-Similarly, to implement a WebSocket client you just need to make a handler by
-passing in a URL. After this you use the handler API as described below to
+Similarly, to implement a WebSocket client you just need to make a driver by
+passing in a URL. After this you use the driver API as described below to
 process incoming data and send outgoing data.
 
 
 ```js
 var net = require('net'),
-    websocket = require('websocket-protocol');
+    websocket = require('websocket-driver');
 
-var handler = websocket.client('ws://www.example.com/socket'),
+var driver = websocket.client('ws://www.example.com/socket'),
     tcp = net.createConnection(80, 'www.example.com');
 
-tcp.pipe(handler.io);
-handler.io.pipe(tcp);
+tcp.pipe(driver.io);
+driver.io.pipe(tcp);
 
-handler.messages.on('data', function(message) {
+driver.messages.on('data', function(message) {
   console.log('Got a message', message);
 });
 
 tcp.on('connect', function() {
-  handler.start();
+  driver.start();
 });
 ```
 
 
-### Handler API
+### Driver API
 
-Handlers are created using one of the following methods:
+Drivers are created using one of the following methods:
 
 ```js
-handler = websocket.http(request, options)
-handler = websocket.client(url, options)
+driver = websocket.http(request, options)
+driver = websocket.client(url, options)
 ```
 
-The `http` method returns a handler chosen using the headers from a Node HTTP
-request object. The `client` method always returns a handler for the RFC
-version of the protocol with masking enabled on outgoing frames.
+The `http` method returns a driver chosen using the headers from a Node HTTP
+request object. The `client` method always returns a driver for the RFC version
+of the protocol with masking enabled on outgoing frames.
 
 The `options` argument is optional, and is an object. It may contain the
 following fields:
 
 * `protocols` - an array of strings representing acceptable subprotocols for
-  use over the socket. The handler will negotiate one of these to use via the
+  use over the socket. The driver will negotiate one of these to use via the
   `Sec-WebSocket-Protocol` header if supported by the other peer.
 
-A handler has two duplex streams attached to it:
+A driver has two duplex streams attached to it:
 
-* <b>`handler.io`</b> - this stream should be attached to an I/O socket like a
+* <b>`driver.io`</b> - this stream should be attached to an I/O socket like a
   TCP stream. Pipe incoming TCP chunks to this stream for them to be parsed,
   and pipe this stream back into TCP to send outgoing frames.
-* <b>`handler.messages`</b> - this stream emits messages received over the
+* <b>`driver.messages`</b> - this stream emits messages received over the
   WebSocket.  Writing to it sends messages to the other peer by emitting frames
-  via the `handler.io` stream.
+  via the `driver.io` stream.
 
-All handlers respond to the following API methods, but some of them are no-ops
+All drivers respond to the following API methods, but some of them are no-ops
 depending on whether the client supports the behaviour.
 
 Note that most of these methods are commands: if they produce data that should
 be sent over the socket, they will give this to you by emitting `data` events
-on the `handler.io` stream.
+on the `driver.io` stream.
 
-#### `handler.on('open', function(event) {})`
+#### `driver.on('open', function(event) {})`
 
 Sets the callback to execute when the socket becomes open.
 
-#### `handler.on('message', function(event) {})`
+#### `driver.on('message', function(event) {})`
 
 Sets the callback to execute when a message is received. `event` will have a
 `data` attribute containing either a string in the case of a text message or a
 `Buffer` in the case of a binary message.
 
-You can also listen for messages using the `handler.messages.on('data')` event,
+You can also listen for messages using the `driver.messages.on('data')` event,
 which emits strings for text messages and buffers for binary messages.
 
-#### `handler.on('error', function(event) {})`
+#### `driver.on('error', function(event) {})`
 
 Sets the callback to execute when a protocol error occurs due to the other peer
 sending an invalid byte sequence. `event` will have a `message` attribute
 describing the error.
 
-#### `handler.on('close', function(event) {})`
+#### `driver.on('close', function(event) {})`
 
 Sets the callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
 
-#### `handler.start()`
+#### `driver.start()`
 
 Initiates the protocol by sending the handshake - either the response for a
-server-side handler or the request for a client-side one. This should be the
+server-side driver or the request for a client-side one. This should be the
 first method you invoke.  Returns `true` iff a handshake was sent.
 
-#### `handler.parse(string)`
+#### `driver.parse(string)`
 
 Takes a string and parses it, potentially resulting in message events being
-emitted (see `on('message')` above) or in data being sent to `handler.io`.  You
+emitted (see `on('message')` above) or in data being sent to `driver.io`.  You
 should send all data you receive via I/O to this method by piping a stream into
-`handler.io`.
+`driver.io`.
 
-#### `handler.text(string)`
+#### `driver.text(string)`
 
 Sends a text message over the socket. If the socket handshake is not yet
 complete, the message will be queued until it is. Returns `true` if the message
 was sent or queued, and `false` if the socket can no longer send messages.
 
-This method is equivalent to `handler.messages.write(string)`.
+This method is equivalent to `driver.messages.write(string)`.
 
-#### `handler.binary(buffer)`
+#### `driver.binary(buffer)`
 
 Takes a `Buffer` and sends it as a binary message. Will queue and return `true`
 or `false` the same way as the `text` method. It will also return `false` if
-the handler does not support binary messages.
+the driver does not support binary messages.
 
-This method is equivalent to `handler.messages.write(buffer)`.
+This method is equivalent to `driver.messages.write(buffer)`.
 
-#### `handler.ping(string = '', function() {})`
+#### `driver.ping(string = '', function() {})`
 
 Sends a ping frame over the socket, queueing it if necessary. `string` and the
 callback are both optional. If a callback is given, it will be invoked when the
 socket receives a pong frame whose content matches `string`. Returns `false` if
-frames can no longer be sent, or if the handler does not support ping/pong.
+frames can no longer be sent, or if the driver does not support ping/pong.
 
-#### `handler.close()`
+#### `driver.close()`
 
-Initiates the closing handshake if the socket is still open. For handlers with
+Initiates the closing handshake if the socket is still open. For drivers with
 no closing handshake, this will result in the immediate execution of the
-`on('close')` handler. For handlers with a closing handshake, this sends a
+`on('close')` driver. For drivers with a closing handshake, this sends a
 closing frame and `emit('close')` will execute when a response is received or a
 protocol error occurs.
 
-#### `handler.version`
+#### `driver.version`
 
 Returns the WebSocket version in use as a string. Will either be `hixie-75`,
 `hixie-76` or `hybi-$version`.
 
-#### `handler.protocol`
+#### `driver.protocol`
 
 Returns a string containing the selected subprotocol, if any was agreed upon
 using the `Sec-WebSocket-Protocol` mechanism. This value becomes available

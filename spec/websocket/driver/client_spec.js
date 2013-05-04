@@ -1,4 +1,4 @@
-var Client = require("../../../lib/websocket/protocol/client")
+var Client = require("../../../lib/websocket/driver/client")
 
 JS.Test.describe("Client", function() { with(this) {
     define("options", function() {
@@ -9,17 +9,17 @@ JS.Test.describe("Client", function() { with(this) {
     null
   })
 
-  define("protocol", function() {
-    if (this._protocol) return this._protocol
-    this._protocol = new Client("ws://www.example.com/socket", this.options())
+  define("driver", function() {
+    if (this._driver) return this._driver
+    this._driver = new Client("ws://www.example.com/socket", this.options())
     var self = this
-    this._protocol.on('open',    function(e) { self.open = true })
-    this._protocol.on('message', function(e) { self.message += e.data })
-    this._protocol.on('error',   function(e) { self.error = e })
-    this._protocol.on('close',   function(e) { self.close = [e.code, e.reason] })
+    this._driver.on('open',    function(e) { self.open = true })
+    this._driver.on('message', function(e) { self.message += e.data })
+    this._driver.on('error',   function(e) { self.error = e })
+    this._driver.on('close',   function(e) { self.close = [e.code, e.reason] })
     var collector = this.collector()
-    this._protocol.io.on("data", function(d) { collector.write(d) })
-    return this._protocol
+    this._driver.io.on("data", function(d) { collector.write(d) })
+    return this._driver
   })
 
   define("key", function() {
@@ -42,12 +42,12 @@ JS.Test.describe("Client", function() { with(this) {
 
   describe("in the beginning state", function() { with(this) {
     it("starts in no state", function() { with(this) {
-      assertEqual( null, protocol().getState() )
+      assertEqual( null, driver().getState() )
     }})
 
     describe("start", function() { with(this) {
       it("writes the handshake request to the socket", function() { with(this) {
-        expect(protocol().io, "emit").given("data", buffer(
+        expect(driver().io, "emit").given("data", buffer(
             "GET /socket HTTP/1.1\r\n" +
             "Host: www.example.com\r\n" +
             "Upgrade: websocket\r\n" +
@@ -55,18 +55,18 @@ JS.Test.describe("Client", function() { with(this) {
             "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
             "Sec-WebSocket-Version: 13\r\n" +
             "\r\n"))
-        protocol().start()
+        driver().start()
       }})
 
       it("returns true", function() { with(this) {
-        assertEqual( true, protocol().start() )
+        assertEqual( true, driver().start() )
       }})
 
       describe("with subprotocols", function() { with(this) {
         define("protocols", function() { return ["foo", "bar", "xmpp"] })
 
         it("writes the handshake with Sec-WebSocket-Protocol", function() { with(this) {
-          expect(protocol().io, "emit").given("data", buffer(
+          expect(driver().io, "emit").given("data", buffer(
               "GET /socket HTTP/1.1\r\n" +
               "Host: www.example.com\r\n" +
               "Upgrade: websocket\r\n" +
@@ -75,27 +75,27 @@ JS.Test.describe("Client", function() { with(this) {
               "Sec-WebSocket-Version: 13\r\n" +
               "Sec-WebSocket-Protocol: foo, bar, xmpp\r\n" +
               "\r\n"))
-          protocol().start()
+          driver().start()
         }})
       }})
 
       it("changes the state to connecting", function() { with(this) {
-        protocol().start()
-        assertEqual( "connecting", protocol().getState() )
+        driver().start()
+        assertEqual( "connecting", driver().getState() )
       }})
     }})
   }})
 
   describe("in the connecting state", function() { with(this) {
-    before(function() { this.protocol().start() })
+    before(function() { this.driver().start() })
 
     describe("with a valid response", function() { with(this) {
-      before(function() { this.protocol().parse(new Buffer(this.response())) })
+      before(function() { this.driver().parse(new Buffer(this.response())) })
 
       it("changes the state to open", function() { with(this) {
         assertEqual( true, open )
         assertEqual( false, close )
-        assertEqual( "open", protocol().getState() )
+        assertEqual( "open", driver().getState() )
       }})
     }})
 
@@ -104,13 +104,13 @@ JS.Test.describe("Client", function() { with(this) {
         var resp = new Buffer(response().length + 4)
         new Buffer(response()).copy(resp)
         new Buffer([0x81, 0x02, 72, 105]).copy(resp, resp.length - 4)
-        protocol().parse(resp)
+        driver().parse(resp)
       }})
 
       it("changes the state to open", function() { with(this) {
         assertEqual( true, open )
         assertEqual( false, close )
-        assertEqual( "open", protocol().getState() )
+        assertEqual( "open", driver().getState() )
       }})
 
       it("parses the frame", function() { with(this) {
@@ -121,28 +121,28 @@ JS.Test.describe("Client", function() { with(this) {
     describe("with a bad Upgrade header", function() { with(this) {
       before(function() {
         var resp = this.response().replace(/websocket/g, "wrong")
-        this.protocol().parse(new Buffer(resp))
+        this.driver().parse(new Buffer(resp))
       })
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
         assertEqual( "Error during WebSocket handshake: 'Upgrade' header value is not 'WebSocket'", error.message )
         assertEqual( [1002, "Error during WebSocket handshake: 'Upgrade' header value is not 'WebSocket'"], close )
-        assertEqual( "closed", protocol().getState() )
+        assertEqual( "closed", driver().getState() )
       }})
     }})
 
     describe("with a bad Accept header", function() { with(this) {
       before(function() {
         var resp = this.response().replace(/QV3/g, "wrong")
-        this.protocol().parse(new Buffer(resp))
+        this.driver().parse(new Buffer(resp))
       })
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
         assertEqual( "Error during WebSocket handshake: Sec-WebSocket-Accept mismatch", error.message )
         assertEqual( [1002, "Error during WebSocket handshake: Sec-WebSocket-Accept mismatch"], close )
-        assertEqual( "closed", protocol().getState() )
+        assertEqual( "closed", driver().getState() )
       }})
     }})
 
@@ -151,17 +151,17 @@ JS.Test.describe("Client", function() { with(this) {
 
       before(function() {
         var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: xmpp\r\n\r\n")
-        this.protocol().parse(new Buffer(resp))
+        this.driver().parse(new Buffer(resp))
       })
 
       it("changs the state to open", function() { with(this) {
         assertEqual( true, open )
         assertEqual( false, close )
-        assertEqual( "open", protocol().getState() )
+        assertEqual( "open", driver().getState() )
       }})
 
       it("selects the subprotocol", function() { with(this) {
-        assertEqual( "xmpp", protocol().protocol )
+        assertEqual( "xmpp", driver().protocol )
       }})
     }})
 
@@ -170,18 +170,18 @@ JS.Test.describe("Client", function() { with(this) {
 
       before(function() {
         var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: irc\r\n\r\n")
-        this.protocol().parse(new Buffer(resp))
+        this.driver().parse(new Buffer(resp))
       })
 
       it("changs the state to closed", function() { with(this) {
         assertEqual( false, open )
         assertEqual( "Error during WebSocket handshake: Sec-WebSocket-Protocol mismatch", error.message )
         assertEqual( [1002, "Error during WebSocket handshake: Sec-WebSocket-Protocol mismatch"], close )
-        assertEqual( "closed", protocol().getState() )
+        assertEqual( "closed", driver().getState() )
       }})
 
       it("selects no subprotocol", function() { with(this) {
-        assertEqual( null, protocol().protocol )
+        assertEqual( null, driver().protocol )
       }})
     }})
   }})

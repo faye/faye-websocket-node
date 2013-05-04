@@ -1,4 +1,4 @@
-var Draft76 = require("../../../lib/websocket/protocol/draft76")
+var Draft76 = require("../../../lib/websocket/driver/draft76")
 
 JS.Test.describe("Draft76", function() { with(this) {
   BODY = new Buffer([0x91, 0x25, 0x3e, 0xd3, 0xa9, 0xe7, 0x6a, 0x88])
@@ -27,16 +27,16 @@ JS.Test.describe("Draft76", function() { with(this) {
     return this._options = this._options || {masking: false}
   })
 
-  define("protocol", function() {
-    if (this._protocol) return this._protocol
-    this._protocol = new Draft76(this.request(), "ws://www.example.com/socket", this.options())
+  define("driver", function() {
+    if (this._driver) return this._driver
+    this._driver = new Draft76(this.request(), "ws://www.example.com/socket", this.options())
     var self = this
-    this._protocol.on('open',    function(e) { self.open = true })
-    this._protocol.on('message', function(e) { self.message += e.data })
-    this._protocol.on('close',   function(e) { self.close = true })
-    this._protocol.io.pipe(this.collector())
-    this._protocol.io.write(this.body())
-    return this._protocol
+    this._driver.on('open',    function(e) { self.open = true })
+    this._driver.on('message', function(e) { self.message += e.data })
+    this._driver.on('close',   function(e) { self.close = true })
+    this._driver.io.pipe(this.collector())
+    this._driver.io.write(this.body())
+    return this._driver
   })
 
   before(function() {
@@ -46,65 +46,65 @@ JS.Test.describe("Draft76", function() { with(this) {
 
   describe("in the connecting state", function() { with(this) {
     it("starts in the connecting state", function() { with(this) {
-      assertEqual( "connecting", protocol().getState() )
+      assertEqual( "connecting", driver().getState() )
     }})
 
     describe("start", function() { with(this) {
       it("writes the handshake response to the socket", function() { with(this) {
-        expect(protocol().io, "emit").given("data", buffer(
+        expect(driver().io, "emit").given("data", buffer(
             "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
             "Sec-WebSocket-Location: ws://www.example.com/socket\r\n" +
             "\r\n"))
-        expect(protocol().io, "emit").given("data", buffer(response()))
-        protocol().start()
+        expect(driver().io, "emit").given("data", buffer(response()))
+        driver().start()
       }})
 
       it("returns true", function() { with(this) {
-        assertEqual( true, protocol().start() )
+        assertEqual( true, driver().start() )
       }})
 
       it("triggers the onopen event", function() { with(this) {
-        protocol().start()
+        driver().start()
         assertEqual( true, open )
       }})
 
       it("changes the state to open", function() { with(this) {
-        protocol().start()
-        assertEqual( "open", protocol().getState() )
+        driver().start()
+        assertEqual( "open", driver().getState() )
       }})
 
       it("sets the protocol version", function() { with(this) {
-        protocol().start()
-        assertEqual( "hixie-76", protocol().version )
+        driver().start()
+        assertEqual( "hixie-76", driver().version )
       }})
     }})
 
     describe("frame", function() { with(this) {
       it("does not write to the socket", function() { with(this) {
-        expect(protocol().io, "emit").exactly(0)
-        protocol().frame("Hello, world")
+        expect(driver().io, "emit").exactly(0)
+        driver().frame("Hello, world")
       }})
 
       it("returns true", function() { with(this) {
-        assertEqual( true, protocol().frame("whatever") )
+        assertEqual( true, driver().frame("whatever") )
       }})
 
       it("queues the frames until the handshake has been sent", function() { with(this) {
-        expect(protocol().io, "emit").given("data", buffer(
+        expect(driver().io, "emit").given("data", buffer(
             "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
             "Sec-WebSocket-Location: ws://www.example.com/socket\r\n" +
             "\r\n"))
-        expect(protocol().io, "emit").given("data", buffer(response()))
-        expect(protocol().io, "emit").given("data", buffer([0x00, 72, 105, 0xff]))
+        expect(driver().io, "emit").given("data", buffer(response()))
+        expect(driver().io, "emit").given("data", buffer([0x00, 72, 105, 0xff]))
 
-        protocol().frame("Hi")
-        protocol().start()
+        driver().frame("Hi")
+        driver().start()
       }})
     }})
 
@@ -114,49 +114,49 @@ JS.Test.describe("Draft76", function() { with(this) {
       })
 
       it("writes the handshake response with no body", function() { with(this) {
-        expect(protocol().io, "emit").given("data", buffer(
+        expect(driver().io, "emit").given("data", buffer(
             "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
             "Sec-WebSocket-Location: ws://www.example.com/socket\r\n" +
             "\r\n"))
-        protocol().start()
+        driver().start()
       }})
 
       it("does not trigger the onopen event", function() { with(this) {
-        protocol().start()
+        driver().start()
         assertEqual( false, open )
       }})
 
       it("leaves the protocol in the connecting state", function() { with(this) {
-        protocol().start()
-        assertEqual( "connecting", protocol().getState() )
+        driver().start()
+        assertEqual( "connecting", driver().getState() )
       }})
 
       describe("when the request body is received", function() { with(this) {
-        before(function() { this.protocol().start() })
+        before(function() { this.driver().start() })
 
         it("sends the response body", function() { with(this) {
-          expect(protocol().io, "emit").given("data", buffer(response()))
-          protocol().parse(BODY)
+          expect(driver().io, "emit").given("data", buffer(response()))
+          driver().parse(BODY)
         }})
 
         it("triggers the onopen event", function() { with(this) {
-          protocol().parse(BODY)
+          driver().parse(BODY)
           assertEqual( true, open )
         }})
 
         it("changes the state to open", function() { with(this) {
-          protocol().parse(BODY)
-          assertEqual( "open", protocol().getState() )
+          driver().parse(BODY)
+          assertEqual( "open", driver().getState() )
         }})
 
         it("sends any frames queued before the handshake was complete", function() { with(this) {
-          expect(protocol().io, "emit").given("data", buffer(response()))
-          expect(protocol().io, "emit").given("data", buffer([0x00, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xff]))
-          protocol().frame("hello")
-          protocol().parse(BODY)
+          expect(driver().io, "emit").given("data", buffer(response()))
+          expect(driver().io, "emit").given("data", buffer([0x00, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xff]))
+          driver().frame("hello")
+          driver().parse(BODY)
         }})
       }})
     }})
@@ -165,20 +165,20 @@ JS.Test.describe("Draft76", function() { with(this) {
   itShouldBehaveLike("draft-75 protocol")
 
   describe("in the open state", function() { with(this) {
-    before(function() { this.protocol().start() })
+    before(function() { this.driver().start() })
 
     describe("parse", function() { with(this) {
       it("closes the socket if a close frame is received", function() { with(this) {
-        protocol().parse([0xff, 0x00])
+        driver().parse([0xff, 0x00])
         assertEqual( true, close )
-        assertEqual( "closed", protocol().getState() )
+        assertEqual( "closed", driver().getState() )
       }})
     }})
 
     describe("close", function() { with(this) {
       it("writes a close message to the socket", function() { with(this) {
-        expect(protocol().io, "emit").given("data", buffer([0xff, 0x00]))
-        protocol().close()
+        expect(driver().io, "emit").given("data", buffer([0xff, 0x00]))
+        driver().close()
       }})
     }})
   }})
