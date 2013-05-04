@@ -35,7 +35,7 @@ var requestHandler = function(request, response) {
     }, 1000);
   }, 2000);
 
-  fs.createReadStream(__dirname + '/haproxy.conf').pipe(es);
+  fs.createReadStream(__dirname + '/haproxy.conf').pipe(es, {end: false});
 
   es.onclose = function() {
     clearInterval(loop);
