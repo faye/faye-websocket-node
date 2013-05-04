@@ -28,6 +28,13 @@ project but now aims to provide simple WebSocket support for any Node-based
 project.
 
 
+## Installation
+
+```
+$ npm install websocket-protocol
+```
+
+
 ## Usage
 
 This module provides protocol handlers that have the same interface on the
