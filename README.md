@@ -41,18 +41,23 @@ var WebSocket = require('faye-websocket'),
 var server = http.createServer();
 
 server.on('upgrade', function(request, socket, head) {
-  if (!WebSocket.isWebSocket(request)) return;
+  if (WebSocket.isWebSocket(request)) {
+    var ws = new WebSocket(request, socket, head);
+    
+    ws.on('message', function(event) {
+      ws.send(event.data);
+    });
+    
+    ws.on('close', function(event) {
+      console.log('close', event.code, event.reason);
+      ws = null;
+    });
 
-  var ws = new WebSocket(request, socket, head);
-  
-  ws.on('message', function(event) {
-    ws.send(event.data);
-  });
-  
-  ws.on('close', function(event) {
-    console.log('close', event.code, event.reason);
-    ws = null;
-  });
+  } else {
+    // Normal HTTP request
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('Hello');
+  }
 });
 
 server.listen(8000);
@@ -188,8 +193,7 @@ server.on('request', function(request, response) {
   } else {
     // Normal HTTP request
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.write('Hello');
-    response.end();
+    response.end('Hello');
   }
 });
 
