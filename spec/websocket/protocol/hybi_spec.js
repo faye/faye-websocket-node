@@ -289,6 +289,13 @@ JS.Test.describe("Hybi", function() { with(this) {
         assertEqual( result, message )
       }})
 
+      it("returns an error for too-large frames", function() { with(this) {
+        protocol().parse([0x81, 0x7f, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        assertEqual( "WebSocket frame length too large", error.message )
+        assertEqual( [1009, "WebSocket frame length too large"], close )
+        assertEqual( "closed", protocol().getState() )
+      }})
+
       it("parses masked medium-length text frames", function() { with(this) {
         protocol().parse([0x81, 0xfe, 0x00, 0xc8])
         protocol().parse(mask())
