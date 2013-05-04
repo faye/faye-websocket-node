@@ -1,3 +1,0 @@
-[submodule "vendor/protocol"]
-	path = vendor/protocol
-	url = git://github.com/faye/websocket-protocol-node.git
