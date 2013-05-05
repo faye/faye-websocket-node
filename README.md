@@ -52,11 +52,17 @@ server.on('upgrade', function(request, socket, body) {
       console.log('close', event.code, event.reason);
       ws = null;
     });
-
   }
 });
 
 server.listen(8000);
+```
+
+`WebSocket` objects are also duplex streams, so you could replace the
+`ws.on('message', ...)` line with:
+
+```js
+    ws.pipe(ws);
 ```
 
 Note that under certain circumstances (notably a draft-76 client connecting
@@ -134,8 +140,6 @@ socket objects expose the selected protocol through the `ws.protocol` property.
 ## WebSocket API
 
 Both server- and client-side `WebSocket` objects support the following API.
-They are both readable and writable streams, so for example you can write an
-echo server using `socket.pipe(socket)`.
 
 * <b>`on('open', function(event) {})`</b> fires when the socket connection is
   established. Event has no attributes.
