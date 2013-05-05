@@ -133,7 +133,9 @@ socket objects expose the selected protocol through the `ws.protocol` property.
 
 ## WebSocket API
 
-Both server- and client-side `WebSocket` objects support the following API:
+Both server- and client-side `WebSocket` objects support the following API.
+They are both readable and writable streams, so for example you can write an
+echo server using `socket.pipe(socket)`.
 
 * <b>`on('open', function(event) {})`</b> fires when the socket connection is
   established. Event has no attributes.

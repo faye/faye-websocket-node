@@ -1,3 +1,9 @@
+### 0.5.0 / 2013-05-05
+
+* Extract the protocol handlers into the `websocket-driver` library
+* Support the Node streaming API
+
+
 ### 0.4.4 / 2013-02-14
 
 * Emit the `close` event if TCP is closed before CLOSE frame is acked

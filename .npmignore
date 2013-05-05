@@ -4,3 +4,4 @@
 .redcar
 .travis.yml
 node_modules
+spec
