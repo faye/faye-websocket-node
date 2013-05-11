@@ -97,6 +97,14 @@ JS.Test.describe("Client", function() { with(this) {
         assertEqual( false, close )
         assertEqual( "open", driver().getState() )
       }})
+
+      it("makes the response status available", function() { with(this) {
+        assertEqual( 101, driver().status )
+      }})
+
+      it("makes the response headers available", function() { with(this) {
+        assertEqual( "websocket", driver().headers.upgrade )
+      }})
     }})
 
     describe("with a valid response followed by a frame", function() { with(this) {
@@ -115,6 +123,20 @@ JS.Test.describe("Client", function() { with(this) {
 
       it("parses the frame", function() { with(this) {
         assertEqual( "Hi", message )
+      }})
+    }})
+
+    describe("with a bad status line", function() { with(this) {
+      before(function() {
+        var resp = this.response().replace(/101/g, "4")
+        this.driver().parse(new Buffer(resp))
+      })
+
+      it("changes the state to closed", function() { with(this) {
+        assertEqual( false, open )
+        assertEqual( "Error during WebSocket handshake: Unexpected response code: 4", error.message )
+        assertEqual( [1002, "Error during WebSocket handshake: Unexpected response code: 4"], close )
+        assertEqual( "closed", driver().getState() )
       }})
     }})
 

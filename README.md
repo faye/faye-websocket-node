@@ -103,6 +103,12 @@ tcp.on('connect', function() {
 });
 ```
 
+Client drivers have two additional properties for reading the HTTP data that
+was sent back by the server:
+
+* `driver.status` - the integer value of the HTTP status code
+* `driver.headers` - an object containing the response headers
+
 
 ### Driver API
 
