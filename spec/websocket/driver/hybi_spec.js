@@ -78,6 +78,23 @@ JS.Test.describe("Hybi", function() { with(this) {
         }})
       }})
 
+      describe("with custom headers", function() { with(this) {
+        before(function() { with(this) {
+          driver().setHeader("Authorization", "Bearer WAT")
+        }})
+
+        it("writes the handshake with Sec-WebSocket-Protocol", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer(
+              "HTTP/1.1 101 Switching Protocols\r\n" +
+              "Upgrade: websocket\r\n" +
+              "Connection: Upgrade\r\n" +
+              "Sec-WebSocket-Accept: JdiiuafpBKRqD7eol0y4vJDTsTs=\r\n" +
+              "Authorization: Bearer WAT\r\n" +
+              "\r\n"))
+          driver().start()
+        }})
+      }})
+
       it("triggers the onopen event", function() { with(this) {
         driver().start()
         assertEqual( true, open )

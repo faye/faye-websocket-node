@@ -79,6 +79,25 @@ JS.Test.describe("Client", function() { with(this) {
         }})
       }})
 
+      describe("with custom headers", function() { with(this) {
+        before(function() { with(this) {
+          driver().setHeader("User-Agent", "Chrome")
+        }})
+
+        it("writes the handshake with custom headers", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer(
+              "GET /socket HTTP/1.1\r\n" +
+              "Host: www.example.com\r\n" +
+              "Upgrade: websocket\r\n" +
+              "Connection: Upgrade\r\n" +
+              "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
+              "Sec-WebSocket-Version: 13\r\n" +
+              "User-Agent: Chrome\r\n" +
+              "\r\n"))
+          driver().start()
+        }})
+      }})
+
       it("changes the state to connecting", function() { with(this) {
         driver().start()
         assertEqual( "connecting", driver().getState() )

@@ -170,6 +170,12 @@ describing the error.
 Sets the callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
 
+#### `driver.setHeader(name, value)`
+
+Sets a custom header to be sent as part of the handshake response, either from
+the server or from the client. Must be called before `start()`, since this is
+when the headers are serialized and sent.
+
 #### `driver.start()`
 
 Initiates the protocol by sending the handshake - either the response for a
