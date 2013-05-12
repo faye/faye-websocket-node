@@ -114,6 +114,9 @@ ws.on('close', function(event) {
 });
 ```
 
+The WebSocket client also lets you inspect the status and headers of the
+handshake response via its `statusCode` and `headers` properties.
+
 
 ## Subprotocol negotiation
 
@@ -135,6 +138,25 @@ var ws = new WebSocket(request, socket, body, ['irc', 'amqp']);
 
 If the client and server agree on a protocol, both the client- and server-side
 socket objects expose the selected protocol through the `ws.protocol` property.
+
+
+## Initialization options
+
+Both the server- and client-side classes allow an options object to be passed
+in at initialization time, for example:
+
+```js
+var ws = new WebSocket(request, socket, body, protocols, options);
+var ws = new WebSocket.Client(url, protocols, options);
+```
+
+`protocols` is an array of subprotocols as described above, or `null`.
+`options` is an optional object containing any of these fields:
+
+* `headers` - an object containing key-value pairs representing HTTP headers to
+  be sent during the handshake process
+* `ping` - an integer that sets how often the WebSocket should send ping
+  frames, measured in seconds
 
 
 ## WebSocket API
