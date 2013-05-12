@@ -118,7 +118,7 @@ JS.Test.describe("Client", function() { with(this) {
       }})
 
       it("makes the response status available", function() { with(this) {
-        assertEqual( 101, driver().status )
+        assertEqual( 101, driver().statusCode )
       }})
 
       it("makes the response headers available", function() { with(this) {
