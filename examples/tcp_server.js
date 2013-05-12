@@ -17,5 +17,5 @@ var server = net.createServer(function(connection) {
   driver.messages.pipe(driver.messages);
 });
 
-server.listen(4180);
+server.listen(process.argv[2]);
 
