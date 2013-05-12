@@ -43,7 +43,7 @@ streams attached; one for incoming/outgoing messages and one for managing the
 wire protocol over an I/O stream. The full API is described below.
 
 
-### Server-side
+### Server-side with HTTP
 
 A Node webserver emits a special event for 'upgrade' requests, and this is
 where you should handle WebSockets. You first check whether the request is a
@@ -77,6 +77,53 @@ Note the line `driver.io.write(body)` - you must pass the `body` buffer to the
 socket driver in order to make certain versions of the protocol work.
 
 
+### Server-side with TCP
+
+You can also handle WebSocket connections in a bare TCP server, if you're not
+using an HTTP server and don't want to implement HTTP parsing yourself.
+
+The driver will emit a `connect` event when a request is received, and at this
+point you can detect whether it's a WebSocket and handle it as such. Here's an
+example using the Node `net` module:
+
+```js
+var net = require('net'),
+    websocket = require('websocket-driver');
+
+var server = net.createServer(function(connection) {
+  var driver = websocket.server();
+
+  driver.on('connect', function() {
+    if (websocket.isWebSocket(driver)) {
+      driver.start();
+    } else {
+      // handle other HTTP requests
+    }
+  });
+
+  driver.on('close', function() { connection.end() });
+  connection.on('error', function() {});
+
+  connection.pipe(driver.io);
+  driver.io.pipe(connection);
+
+  driver.messages.pipe(driver.messages);
+});
+
+server.listen(4180);
+```
+
+In the `connect` event, the driver gains several properties to describe the
+request, similar to a Node request object, such as `method`, `url` and
+`headers`. However you should remember it's not a real request object; you
+cannot write data to it, it only tells you what request data we parsed from the
+input.
+
+If the request has a body, it will be in the `driver.body` buffer, but only as
+much of the body as has been piped into the driver when the `connect` event
+fires.
+
+
 ### Client-side
 
 Similarly, to implement a WebSocket client you just need to make a driver by
@@ -106,7 +153,7 @@ tcp.on('connect', function() {
 Client drivers have two additional properties for reading the HTTP data that
 was sent back by the server:
 
-* `driver.status` - the integer value of the HTTP status code
+* `driver.statusCode` - the integer value of the HTTP status code
 * `driver.headers` - an object containing the response headers
 
 
@@ -116,12 +163,15 @@ Drivers are created using one of the following methods:
 
 ```js
 driver = websocket.http(request, options)
+driver = websocket.server(options)
 driver = websocket.client(url, options)
 ```
 
 The `http` method returns a driver chosen using the headers from a Node HTTP
-request object. The `client` method always returns a driver for the RFC version
-of the protocol with masking enabled on outgoing frames.
+request object. The `server` method returns a driver that will parse an HTTP
+request and then decide which driver to use for it using the `http` method. The
+`client` method always returns a driver for the RFC version of the protocol
+with masking enabled on outgoing frames.
 
 The `options` argument is optional, and is an object. It may contain the
 following fields:

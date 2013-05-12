@@ -4,9 +4,11 @@ var net       = require('net'),
 var server = net.createServer(function(connection) {
   var driver = websocket.server();
 
-  driver.on('connect', function() { driver.start() });
-  driver.on('close', function() { connection.end() });
+  driver.on('connect', function() {
+    if (websocket.isWebSocket(driver)) driver.start();
+  });
 
+  driver.on('close', function() { connection.end() });
   connection.on('error', function() {});
 
   connection.pipe(driver.io);
@@ -16,4 +18,4 @@ var server = net.createServer(function(connection) {
 });
 
 server.listen(4180);
-    
+
