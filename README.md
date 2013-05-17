@@ -70,7 +70,7 @@ server.on('upgrade', function(request, socket, body) {
   });
 
   driver.start();
-};
+});
 ```
 
 Note the line `driver.io.write(body)` - you must pass the `body` buffer to the
