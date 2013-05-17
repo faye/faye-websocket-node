@@ -1,3 +1,8 @@
+### 0.2.1 / 2013-05-17
+
+* Export the isSecureRequest() method since faye-websocket relies on it
+* Queue sent messages in the client's initial state
+
 ### 0.2.0 / 2013-05-12
 
 * Add API for setting and reading headers
