@@ -62,8 +62,7 @@ server.on('upgrade', function(request, socket, body) {
   var driver = websocket.http(request);
 
   driver.io.write(body);
-  socket.pipe(driver.io);
-  driver.io.pipe(socket);
+  socket.pipe(driver.io).pipe(socket);
 
   driver.messages.on('data', function(message) {
     console.log('Got a message', message);
@@ -104,8 +103,7 @@ var server = net.createServer(function(connection) {
   driver.on('close', function() { connection.end() });
   connection.on('error', function() {});
 
-  connection.pipe(driver.io);
-  driver.io.pipe(connection);
+  connection.pipe(driver.io).pipe(connection);
 
   driver.messages.pipe(driver.messages);
 });
@@ -138,8 +136,7 @@ var net = require('net'),
 var driver = websocket.client('ws://www.example.com/socket'),
     tcp = net.createConnection(80, 'www.example.com');
 
-tcp.pipe(driver.io);
-driver.io.pipe(tcp);
+tcp.pipe(driver.io).pipe(tcp);
 
 driver.messages.on('data', function(message) {
   console.log('Got a message', message);
