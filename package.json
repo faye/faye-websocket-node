@@ -19,7 +19,7 @@
                         }
                       ]
 
-, "repositories"    : { "type"  : "git",
+, "repository"    : { "type"  : "git",
                         "url"   : "git://github.com/faye/faye-websocket-node.git"
                       }
 }
