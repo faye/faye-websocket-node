@@ -1,4 +1,5 @@
-var Client = require('../../../lib/faye/websocket/client')
+var Client = require('../../../lib/faye/websocket/client'),
+    fs     = require('fs')
 
 JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
   server: function(port, secure, callback) {
@@ -24,7 +25,9 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
                    callback()
                  }
 
-    this._ws = new Client(url, protocols, {verify: false})
+    this._ws = new Client(url, protocols, {
+      ca: fs.readFileSync(__dirname + '/../../server.crt')
+    })
 
     this._ws.onopen  = function() { resume(true)  }
     this._ws.onclose = function() { resume(false) }
