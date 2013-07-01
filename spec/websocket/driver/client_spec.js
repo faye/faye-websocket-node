@@ -1,6 +1,7 @@
-var Client = require("../../../lib/websocket/driver/client")
+var Client = require("../../../lib/websocket/driver/client"),
+    test   = require('jstest').Test
 
-JS.Test.describe("Client", function() { with(this) {
+test.describe("Client", function() { with(this) {
     define("options", function() {
     return this._options = this._options || {protocols: this.protocols()}
   })

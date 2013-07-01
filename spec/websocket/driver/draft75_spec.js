@@ -1,6 +1,7 @@
-var Draft75 = require("../../../lib/websocket/driver/draft75")
+var Draft75 = require("../../../lib/websocket/driver/draft75"),
+    test    = require('jstest').Test
 
-JS.Test.describe("Draft75", function() { with(this) {
+test.describe("Draft75", function() { with(this) {
   define("request", function() {
     return this._request = this._request || {
       headers: {

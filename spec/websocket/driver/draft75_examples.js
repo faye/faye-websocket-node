@@ -1,4 +1,6 @@
-JS.Test.describe("draft-75", function() { with(this) {
+var test = require('jstest').Test
+
+test.describe("draft-75", function() { with(this) {
   sharedExamplesFor("draft-75 protocol", function() { with(this) {
     describe("in the open state", function() { with(this) {
       before(function() { this.driver().start() })

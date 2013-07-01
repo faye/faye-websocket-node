@@ -1,6 +1,7 @@
-var Hybi = require("../../../lib/websocket/driver/hybi")
+var Hybi = require("../../../lib/websocket/driver/hybi"),
+    test = require('jstest').Test
 
-JS.Test.describe("Hybi", function() { with(this) {
+test.describe("Hybi", function() { with(this) {
   define("request", function() {
     return this._request = this._request || {
       headers: {

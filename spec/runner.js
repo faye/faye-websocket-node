@@ -1,6 +1,5 @@
-require('jsclass')
-
-var Stream = require('stream').Stream,
+var test   = require('jstest').Test,
+    Stream = require('stream').Stream,
     util   = require('util')
 
 var BufferMatcher = function(data) {
@@ -29,21 +28,18 @@ Collector.prototype.write = function(buffer) {
   return true
 }
 
-JS.require('JS.Test', function() {
-  JS.Test.Unit.TestCase.include({
-    buffer: function(data) {
-      return new BufferMatcher(data)
-    },
-    collector: function() {
-      return this._collector = this._collector || new Collector()
-    }
-  })
-
-  require('./websocket/driver/draft75_examples')
-  require('./websocket/driver/draft75_spec')
-  require('./websocket/driver/draft76_spec')
-  require('./websocket/driver/hybi_spec')
-  require('./websocket/driver/client_spec')
-  JS.Test.autorun()
+test.Unit.TestCase.include({
+  buffer: function(data) {
+    return new BufferMatcher(data)
+  },
+  collector: function() {
+    return this._collector = this._collector || new Collector()
+  }
 })
+
+require('./websocket/driver/draft75_examples')
+require('./websocket/driver/draft75_spec')
+require('./websocket/driver/draft76_spec')
+require('./websocket/driver/hybi_spec')
+require('./websocket/driver/client_spec')
 

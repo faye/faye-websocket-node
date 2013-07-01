@@ -3,24 +3,19 @@
 , "homepage"        : "http://github.com/faye/websocket-driver-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket"]
+, "license"         : "MIT"
 
 , "version"         : "0.2.1"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/websocket/driver"
-, "devDependencies" : {"jsclass": ""}
+, "devDependencies" : {"jstest": ""}
 
-, "scripts"         : {"test": "node spec/runner.js"}
+, "scripts"         : {"test": "jstest spec/runner.js"}
+
+, "repository"      : { "type"  : "git"
+                      , "url"   : "git://github.com/faye/websocket-driver-node.git"
+                      }
 
 , "bugs"            : "http://github.com/faye/websocket-driver-node/issues"
-
-, "licenses"        : [ { "type"  : "MIT"
-                        , "url"   : "http://www.opensource.org/licenses/mit-license.php"
-                        }
-                      ]
-
-, "repositories"    : [ { "type"  : "git"
-                        , "url"   : "git://github.com/faye/websocket-driver-node.git"
-                        }
-                      ]
 }
 

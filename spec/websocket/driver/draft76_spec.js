@@ -1,6 +1,7 @@
-var Draft76 = require("../../../lib/websocket/driver/draft76")
+var Draft76 = require("../../../lib/websocket/driver/draft76"),
+    test    = require('jstest').Test
 
-JS.Test.describe("Draft76", function() { with(this) {
+test.describe("Draft76", function() { with(this) {
   BODY = new Buffer([0x91, 0x25, 0x3e, 0xd3, 0xa9, 0xe7, 0x6a, 0x88])
 
   define("body", function() {
