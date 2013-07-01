@@ -1,12 +1,11 @@
-require('jsclass')
-
 var WebSocket = require('../lib/faye/websocket'),
     fs        = require('fs'),
     http      = require('http'),
-    https     = require('https')
+    https     = require('https'),
+    test      = require('jstest').Test
 
 
-JS.ENV.EchoServer = function() {}
+EchoServer = function() {}
 EchoServer.prototype.listen = function(port, ssl) {
   var server = ssl
              ? https.createServer({
@@ -30,8 +29,5 @@ EchoServer.prototype.stop = function(callback, scope) {
 }
 
 
-JS.require('JS.Test', function() {
-  require('./faye/websocket/client_spec')
-  JS.Test.autorun()
-})
+require('./faye/websocket/client_spec')
 

@@ -8,9 +8,9 @@
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
 , "dependencies"    : {"websocket-driver": ">=0.2.0"}
-, "devDependencies" : {"jsclass": "", "pace": ""}
+, "devDependencies" : {"jstest": "", "pace": ""}
 
-, "scripts"         : {"test": "node spec/runner.js"}
+, "scripts"         : {"test": "jstest spec/runner.js"}
 
 , "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
 

@@ -1,7 +1,8 @@
 var Client = require('../../../lib/faye/websocket/client'),
+    test   = require('jstest').Test,
     fs     = require('fs')
 
-JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
+var WebSocketSteps = test.asyncSteps({
   server: function(port, secure, callback) {
     this._adapter = new EchoServer()
     this._adapter.listen(port, secure)
@@ -80,7 +81,7 @@ JS.ENV.WebSocketSteps = JS.Test.asyncSteps({
 })
 
 
-JS.ENV.ClientSpec = JS.Test.describe("Client", function() { with(this) {
+test.describe("Client", function() { with(this) {
   include(WebSocketSteps)
 
   before(function() {
