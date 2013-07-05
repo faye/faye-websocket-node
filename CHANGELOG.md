@@ -1,3 +1,7 @@
+### 0.2.2 / 2013-07-05
+
+* No functional changes, just updates to package.json
+
 ### 0.2.1 / 2013-05-17
 
 * Export the isSecureRequest() method since faye-websocket relies on it
