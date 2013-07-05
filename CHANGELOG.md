@@ -1,3 +1,9 @@
+### 0.6.1 / 2013-07-05
+
+* Add `ca` option to the client for specifying certificate authorities
+* Start the server driver asynchronously so that `onopen` handlers can be added
+
+
 ### 0.6.0 / 2013-05-12
 
 * Add support for custom headers
