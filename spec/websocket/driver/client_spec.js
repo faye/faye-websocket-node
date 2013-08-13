@@ -10,9 +10,13 @@ test.describe("Client", function() { with(this) {
     null
   })
 
+  define("url", function() {
+    return "ws://www.example.com/socket"
+  })
+
   define("driver", function() {
     if (this._driver) return this._driver
-    this._driver = new Client("ws://www.example.com/socket", this.options())
+    this._driver = new Client(this.url(), this.options())
     var self = this
     this._driver.on('open',    function(e) { self.open = true })
     this._driver.on('message', function(e) { self.message += e.data })
@@ -75,6 +79,23 @@ test.describe("Client", function() { with(this) {
               "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
               "Sec-WebSocket-Version: 13\r\n" +
               "Sec-WebSocket-Protocol: foo, bar, xmpp\r\n" +
+              "\r\n"))
+          driver().start()
+        }})
+      }})
+
+      describe("with basic auth", function() { with(this) {
+        define("url", function() { return "ws://user:pass@www.example.com/socket" })
+
+        it("writes the handshake with Authorization", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer(
+              "GET /socket HTTP/1.1\r\n" +
+              "Host: www.example.com\r\n" +
+              "Upgrade: websocket\r\n" +
+              "Connection: Upgrade\r\n" +
+              "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
+              "Sec-WebSocket-Version: 13\r\n" +
+              "Authorization: Basic dXNlcjpwYXNz\r\n" +
               "\r\n"))
           driver().start()
         }})
