@@ -1,3 +1,8 @@
+### 0.7.0 / 2013-09-09
+
+* Allow the server to send custom headers with EventSource responses
+
+
 ### 0.6.1 / 2013-07-05
 
 * Add `ca` option to the client for specifying certificate authorities

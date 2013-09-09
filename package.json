@@ -5,10 +5,10 @@
 , "keywords"        : ["websocket", "eventsource"]
 , "license"         : "MIT"
 
-, "version"         : "0.6.1"
+, "version"         : "0.7.0"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
-, "dependencies"    : {"websocket-driver": ">=0.2.0"}
+, "dependencies"    : {"websocket-driver": ">=0.3.0"}
 , "devDependencies" : {"jstest": "", "pace": ""}
 
 , "scripts"         : {"test": "jstest spec/runner.js"}
