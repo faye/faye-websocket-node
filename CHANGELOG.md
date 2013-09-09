@@ -1,3 +1,7 @@
+### 0.3.0 / 2013-09-09
+
+* Support client URLs with Basic Auth credentials
+
 ### 0.2.2 / 2013-07-05
 
 * No functional changes, just updates to package.json
