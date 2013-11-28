@@ -308,7 +308,7 @@ test.describe("Hybi", function() { with(this) {
       }})
 
       it("returns an error for too-large frames", function() { with(this) {
-        driver().parse([0x81, 0x7f, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+        driver().parse([0x81, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00])
         assertEqual( "WebSocket frame length too large", error.message )
         assertEqual( [1009, "WebSocket frame length too large"], close )
         assertEqual( "closed", driver().getState() )
