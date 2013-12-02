@@ -155,6 +155,8 @@ var ws = new WebSocket.Client(url, protocols, options);
 
 * `headers` - an object containing key-value pairs representing HTTP headers to
   be sent during the handshake process
+* `maxLength` - the maximum allowed size of incoming message frames, in bytes.
+  The default value is `2^30 - 1`, or 1 byte short of 1 GiB.
 * `ping` - an integer that sets how often the WebSocket should send ping
   frames, measured in seconds
 
