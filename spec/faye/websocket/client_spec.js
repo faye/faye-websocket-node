@@ -7,12 +7,12 @@ var WebSocketSteps = test.asyncSteps({
     this._adapter = new EchoServer()
     this._adapter.listen(port, secure)
     this._port = port
-    setTimeout(callback, 100)
+    process.nextTick(callback)
   },
 
   stop: function(callback) {
     this._adapter.stop()
-    setTimeout(callback, 100)
+    process.nextTick(callback)
   },
 
   open_socket: function(url, protocols, callback) {
@@ -59,14 +59,20 @@ var WebSocketSteps = test.asyncSteps({
   },
 
   listen_for_message: function(callback) {
-    var self = this
+    var time = new Date().getTime(), self = this
     this._ws.addEventListener('message', function(message) { self._message = message.data })
-    callback()
+    var timer = setInterval(function() {
+      if (self._message || new Date().getTime() - time > 3000) {
+        clearInterval(timer)
+        callback()
+      }
+    }, 100)
   },
 
   send_message: function(message, callback) {
-    this._ws.send(message)
-    setTimeout(callback, 100)
+    var ws = this._ws
+    setTimeout(function() { ws.send(message) }, 500)
+    process.nextTick(callback)
   },
 
   check_response: function(message, callback) {
@@ -110,26 +116,26 @@ test.describe("Client", function() { with(this) {
       }})
 
       it("can send and receive messages", function() { with(this) {
-        listen_for_message()
         send_message("I expect this to be echoed")
+        listen_for_message()
         check_response("I expect this to be echoed")
       }})
 
       it("sends numbers as strings", function() { with(this) {
-        listen_for_message()
         send_message(13)
+        listen_for_message()
         check_response("13")
       }})
 
       it("sends booleans as strings", function() { with(this) {
-        listen_for_message()
         send_message(false)
+        listen_for_message()
         check_response("false")
       }})
 
       it("sends arrays as strings", function() { with(this) {
-        listen_for_message()
         send_message([13,14,15])
+        listen_for_message()
         check_response("13,14,15")
       }})
     }})
@@ -141,8 +147,8 @@ test.describe("Client", function() { with(this) {
       }})
 
       it("cannot send and receive messages", function() { with(this) {
-        listen_for_message()
         send_message("I expect this to be echoed")
+        listen_for_message()
         check_no_response()
       }})
     }})
