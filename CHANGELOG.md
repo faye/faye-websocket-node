@@ -1,3 +1,9 @@
+### 0.3.1 / 2013-12-03
+
+* Add a `maxLength` option to limit allowed frame size
+* Don't pre-allocate a message buffer until the whole frame has arrived
+* Fix compatibility with Node v0.11 `HTTPParser`
+
 ### 0.3.0 / 2013-09-09
 
 * Support client URLs with Basic Auth credentials
