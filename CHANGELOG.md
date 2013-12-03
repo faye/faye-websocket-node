@@ -1,3 +1,9 @@
+### 0.7.1 / 2013-12-03
+
+* Support the `maxLength` websocket-driver option
+* Make the client emit `error` events on network errors
+
+
 ### 0.7.0 / 2013-09-09
 
 * Allow the server to send custom headers with EventSource responses
