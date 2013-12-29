@@ -1,3 +1,8 @@
+### 0.7.2 / 2013-12-29
+
+* Make sure the `close` event is emitted by clients on Node v0.10
+
+
 ### 0.7.1 / 2013-12-03
 
 * Support the `maxLength` websocket-driver option
