@@ -53,7 +53,7 @@ test.describe("Draft76", function() { with(this) {
     describe("start", function() { with(this) {
       it("writes the handshake response to the socket", function() { with(this) {
         expect(driver().io, "emit").given("data", buffer(
-            "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+            "HTTP/1.1 101 WebSocket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
@@ -95,7 +95,7 @@ test.describe("Draft76", function() { with(this) {
 
       it("queues the frames until the handshake has been sent", function() { with(this) {
         expect(driver().io, "emit").given("data", buffer(
-            "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+            "HTTP/1.1 101 WebSocket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
@@ -116,7 +116,7 @@ test.describe("Draft76", function() { with(this) {
 
       it("writes the handshake response with no body", function() { with(this) {
         expect(driver().io, "emit").given("data", buffer(
-            "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+            "HTTP/1.1 101 WebSocket Protocol Handshake\r\n" +
             "Upgrade: WebSocket\r\n" +
             "Connection: Upgrade\r\n" +
             "Sec-WebSocket-Origin: http://www.example.com\r\n" +
