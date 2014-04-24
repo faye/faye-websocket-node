@@ -1,3 +1,7 @@
+### 0.3.3 / 2014-04-24
+
+* Correct the draft-76 status line reason phrase
+
 ### 0.3.2 / 2013-12-29
 
 * Expand `maxLength` to cover sequences of continuation frames and `draft-{75,76}`

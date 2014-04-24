@@ -285,7 +285,7 @@ after `emit('open')` has fired.
 
 (The MIT License)
 
-Copyright (c) 2010-2013 James Coglan
+Copyright (c) 2010-2014 James Coglan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the 'Software'), to deal in
