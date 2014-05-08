@@ -1,3 +1,7 @@
+### 0.3.4 / 2014-05-08
+
+* Don't hold memory-leaking references to I/O buffers after they have been parsed
+
 ### 0.3.3 / 2014-04-24
 
 * Correct the draft-76 status line reason phrase
