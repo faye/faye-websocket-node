@@ -30,4 +30,3 @@ EchoServer.prototype.stop = function(callback, scope) {
 
 
 require('./faye/websocket/client_spec')
-

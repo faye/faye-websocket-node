@@ -65,4 +65,3 @@ var server = secure
 server.on('request', requestHandler);
 server.on('upgrade', upgradeHandler);
 server.listen(port);
-

@@ -21,4 +21,3 @@ ws.onmessage = function(event) {
 ws.onclose = function(event) {
   console.log('close', event.code, event.reason);
 };
-

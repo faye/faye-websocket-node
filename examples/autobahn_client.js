@@ -35,4 +35,3 @@ socket.onclose = function() {
 
   runCase(1);
 };
-

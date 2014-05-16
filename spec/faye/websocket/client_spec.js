@@ -178,4 +178,3 @@ test.describe("Client", function() { with(this) {
     behavesLike("socket client")
   }})
 }})
-
