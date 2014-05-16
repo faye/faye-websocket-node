@@ -42,4 +42,3 @@ require('./websocket/driver/draft75_spec')
 require('./websocket/driver/draft76_spec')
 require('./websocket/driver/hybi_spec')
 require('./websocket/driver/client_spec')
-

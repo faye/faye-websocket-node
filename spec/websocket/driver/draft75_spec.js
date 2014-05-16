@@ -97,4 +97,3 @@ test.describe("Draft75", function() { with(this) {
 
   itShouldBehaveLike("draft-75 protocol")
 }})
-
