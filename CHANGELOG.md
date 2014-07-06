@@ -1,3 +1,8 @@
+### 0.3.5 / 2014-07-06
+
+* Don't hold references to frame buffers after a message has been emitted
+* Make sure that `protocol` and `version` are exposed properly by the TCP driver
+
 ### 0.3.4 / 2014-05-08
 
 * Don't hold memory-leaking references to I/O buffers after they have been parsed
