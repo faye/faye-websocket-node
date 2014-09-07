@@ -1,7 +1,7 @@
 # faye-websocket
 
 * Travis CI build: [![Build
-  status](https://secure.travis-ci.org/faye/faye-websocket-node.png)](http://travis-ci.org/faye/faye-websocket-node)
+  status](https://secure.travis-ci.org/faye/faye-websocket-node.svg)](http://travis-ci.org/faye/faye-websocket-node)
 * Autobahn tests: [server](http://faye.jcoglan.com/autobahn/servers/),
   [client](http://faye.jcoglan.com/autobahn/clients/)
 
