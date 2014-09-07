@@ -34,6 +34,21 @@ var WebSocketSteps = test.asyncSteps({
     this._ws.onclose = function() { resume(false) }
   },
 
+  open_socket_and_close_it_fast: function(url, protocols, callback) {
+    var self = this
+
+    this._ws = new Client(url, protocols, {
+      ca: fs.readFileSync(__dirname + '/../../server.crt')
+    })
+
+    this._ws.onopen  = function() { self._open = self._ever_opened = true  }
+    this._ws.onclose = function() { self._open = false }
+
+    this._ws.close()
+
+    callback()
+  },
+
   close_socket: function(callback) {
     var self = this
     this._ws.onclose = function() {
@@ -50,6 +65,21 @@ var WebSocketSteps = test.asyncSteps({
 
   check_closed: function(callback) {
     this.assert( !this._open )
+    callback()
+  },
+
+  check_never_opened: function(callback) {
+    this.assert( !this._ever_opened )
+    callback()
+  },
+
+  check_readable: function(callback) {
+    this.assert( this._ws.readable )
+    callback()
+  },
+
+  check_not_readable: function(callback) {
+    this.assert( ! this._ws.readable )
     callback()
   },
 
@@ -83,6 +113,10 @@ var WebSocketSteps = test.asyncSteps({
   check_no_response: function(callback) {
     this.assert( !this._message )
     callback()
+  },
+
+  wait: function (ms, callback) {
+    setTimeout(callback, ms)
   }
 })
 
@@ -106,8 +140,10 @@ test.describe("Client", function() { with(this) {
 
     it("can close the connection", function() { with(this) {
       open_socket(socket_url, protocols)
+      check_readable()
       close_socket()
       check_closed()
+      check_not_readable()
     }})
 
     describe("in the OPEN state", function() { with(this) {
@@ -151,6 +187,16 @@ test.describe("Client", function() { with(this) {
         listen_for_message()
         check_no_response()
       }})
+    }})
+
+    it("can be closed before connecting", function() { with(this) {
+      open_socket_and_close_it_fast(socket_url, protocols)
+      check_closed()
+      check_never_opened()
+      wait(10)
+      check_closed()
+      check_never_opened()
+      check_not_readable()
     }})
   }})
 
