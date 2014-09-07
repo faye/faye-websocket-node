@@ -1,4 +1,4 @@
-# websocket-driver [![Build Status](https://travis-ci.org/faye/websocket-driver-node.png)](https://travis-ci.org/faye/websocket-driver-node)
+# websocket-driver [![Build Status](https://travis-ci.org/faye/websocket-driver-node.svg)](https://travis-ci.org/faye/websocket-driver-node)
 
 This module provides a complete implementation of the WebSocket protocols that
 can be hooked up to any I/O stream. It aims to simplify things by decoupling
