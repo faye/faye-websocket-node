@@ -50,6 +50,14 @@ test.describe("Client", function() { with(this) {
       assertEqual( null, driver().getState() )
     }})
 
+    describe("close", function() { with(this) {
+      it("changes the state to closed", function() { with(this) {
+        driver().close()
+        assertEqual( "closed", driver().getState() )
+        assertEqual( [1000, ''], close )
+      }})
+    }})
+
     describe("start", function() { with(this) {
       it("writes the handshake request to the socket", function() { with(this) {
         expect(driver().io, "emit").given("data", buffer(
