@@ -1,6 +1,10 @@
 var Client = require('../../../lib/faye/websocket/client'),
     test   = require('jstest').Test,
-    fs     = require('fs')
+    fs     = require('fs'),
+    net    = require('net'),
+    tls    = require('tls')
+
+var ca = fs.readFileSync(__dirname + '/../../server.crt')
 
 var WebSocketSteps = test.asyncSteps({
   server: function(port, secure, callback) {
@@ -27,18 +31,49 @@ var WebSocketSteps = test.asyncSteps({
                  }
 
     this._ws = new Client(url, protocols, {
-      ca: fs.readFileSync(__dirname + '/../../server.crt')
+      ca: ca
     })
 
     this._ws.onopen  = function() { resume(true)  }
     this._ws.onclose = function() { resume(false) }
   },
 
+  open_socket_with_existing_connection: function(url, protocols, secure, callback) {
+    var uri = require('url').parse(url),
+        conn,
+        self = this,
+        onConnect = function () {
+          var done = false,
+
+              resume = function(open) {
+                         if (done) return
+                         done = true
+                         self._open = open
+                         callback()
+                       }
+
+          self._ws = new Client(url, protocols, {
+            connection: conn,
+            ca: ca
+          })
+
+          self._ws.onopen  = function() { resume(true)  }
+          self._ws.onclose = function() { resume(false) }
+        }
+
+    if (secure) {
+      conn = tls.connect(uri.port || 443, uri.hostname, { ca: ca }, onConnect)
+    } else {
+      conn = net.createConnection(uri.port || 80, uri.hostname)
+      conn.on('connect', onConnect);
+    }
+  },
+
   open_socket_and_close_it_fast: function(url, protocols, callback) {
     var self = this
 
     this._ws = new Client(url, protocols, {
-      ca: fs.readFileSync(__dirname + '/../../server.crt')
+      ca: ca
     })
 
     this._ws.onopen  = function() { self._open = self._ever_opened = true  }
@@ -134,6 +169,13 @@ test.describe("Client", function() { with(this) {
   sharedBehavior("socket client", function() { with(this) {
     it("can open a connection", function() { with(this) {
       open_socket(socket_url, protocols)
+      check_open()
+      check_protocol("echo")
+    }})
+
+    it("can use an open connection", function() { with(this) {
+      open_socket_with_existing_connection(socket_url, protocols,
+                                           socket_url === secure_url)
       check_open()
       check_protocol("echo")
     }})
