@@ -1,3 +1,7 @@
+### 0.3.6 / 2014-10-04
+
+* It is now possible to call `close()` before `start()` and close the driver
+
 ### 0.3.5 / 2014-07-06
 
 * Don't hold references to frame buffers after a message has been emitted
