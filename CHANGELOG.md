@@ -1,3 +1,8 @@
+### 0.7.3 / 2014-10-04
+
+* Allow sockets to be closed when they are in any state other than `CLOSED`
+
+
 ### 0.7.2 / 2013-12-29
 
 * Make sure the `close` event is emitted by clients on Node v0.10
