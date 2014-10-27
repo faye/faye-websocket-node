@@ -117,6 +117,15 @@ ws.on('close', function(event) {
 The WebSocket client also lets you inspect the status and headers of the
 handshake response via its `statusCode` and `headers` properties.
 
+To connect via a proxy, set the `proxy` option to the HTTP origin of the proxy,
+including any authorization information:
+
+```js
+var ws = new WebSocket.Client('ws://www.example.com/', null, {
+  proxy: 'http://username:password@proxy.example.com'
+});
+```
+
 
 ## Subprotocol negotiation
 

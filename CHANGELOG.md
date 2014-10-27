@@ -1,3 +1,9 @@
+### 0.8.0 / 2014-10-27
+
+* Support connections via HTTP proxies
+* Close the connection cleanly if we're still waiting for a handshake response
+
+
 ### 0.7.3 / 2014-10-04
 
 * Allow sockets to be closed when they are in any state other than `CLOSED`
