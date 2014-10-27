@@ -154,6 +154,25 @@ was sent back by the server:
 * `driver.headers` - an object containing the response headers
 
 
+### HTTP Proxies
+
+The client driver supports connections via HTTP proxies using the `CONNECT`
+method. Instead of sending the WebSocket handshake immediately, it will send a
+`CONNECT` request, wait for a `200` response, and then proceed as normal. To use
+this feature, set the `proxy` option to the HTTP origin of the proxy, including
+any authorization information.
+
+```js
+var driver = websocket.client('ws://www.example.com/socket', {
+  proxy: 'http://username:password@proxy.example.com'
+});
+```
+
+It is up to you to set up a TCP connection to the proxy yourself. If you prefer,
+you can perform the `CONNECT` logic yourself and then hand off the TCP
+connection to the client driver to continue the handshake process.
+
+
 ### Driver API
 
 Drivers are created using one of the following methods:
