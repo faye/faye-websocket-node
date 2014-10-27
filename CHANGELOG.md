@@ -1,3 +1,7 @@
+### 0.4.0 / 2014-10-27
+
+* Support connection via HTTP proxies using `CONNECT`
+
 ### 0.3.6 / 2014-10-04
 
 * It is now possible to call `close()` before `start()` and close the driver
