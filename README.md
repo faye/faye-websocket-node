@@ -168,7 +168,8 @@ var ws = new WebSocket.Client(url, protocols, options);
   The default value is `2^26 - 1`, or 1 byte short of 64 MiB.
 * `ping` - an integer that sets how often the WebSocket should send ping
   frames, measured in seconds
-
+* `proxy` - the origin of an HTTP proxy, including a username and password if
+  required
 
 ## WebSocket API
 
