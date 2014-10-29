@@ -134,7 +134,7 @@ var net = require('net'),
     websocket = require('websocket-driver');
 
 var driver = websocket.client('ws://www.example.com/socket'),
-    tcp = net.createConnection(80, 'www.example.com');
+    tcp = net.connect(80, 'www.example.com');
 
 tcp.pipe(driver.io).pipe(tcp);
 
@@ -175,7 +175,7 @@ var net = require('net'),
 
 var driver = websocket.client('ws://www.example.com/socket'),
     proxy  = driver.proxy('http://username:password@proxy.example.com'),
-    tcp    = net.createConnection(80, 'www.example.com');
+    tcp    = net.connect(80, 'proxy.example.com');
 
 tcp.pipe(proxy).pipe(tcp, {end: false});
 
