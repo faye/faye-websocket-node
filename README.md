@@ -213,7 +213,7 @@ You can also configure the TLS handshake to the origin server by passing the
 
 ```
 var proxy = driver.proxy(proxyUrl, {
-  tls: {cert: fs.readFileSync('ca.crt')}
+  tls: {cert: fs.readFileSync('client.crt')}
 });
 ```
 
