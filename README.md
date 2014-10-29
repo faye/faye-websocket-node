@@ -208,8 +208,8 @@ proxy.setHeader('User-Agent', 'node');
 proxy.start();
 ```
 
-You can also configure the TLS handshake to the origin server by passing the
-`tls` option to the constructor:
+You can also configure the TLS handshake to the origin server, if you're making
+a `wss:` connection, by passing the `tls` option to the constructor:
 
 ```
 var proxy = driver.proxy(proxyUrl, {
