@@ -138,12 +138,12 @@ var driver = websocket.client('ws://www.example.com/socket'),
 
 tcp.pipe(driver.io).pipe(tcp);
 
-driver.messages.on('data', function(message) {
-  console.log('Got a message', message);
-});
-
 tcp.on('connect', function() {
   driver.start();
+});
+
+driver.messages.on('data', function(message) {
+  console.log('Got a message', message);
 });
 ```
 
@@ -158,19 +158,68 @@ was sent back by the server:
 
 The client driver supports connections via HTTP proxies using the `CONNECT`
 method. Instead of sending the WebSocket handshake immediately, it will send a
-`CONNECT` request, wait for a `200` response, and then proceed as normal. To use
-this feature, set the `proxy` option to the HTTP origin of the proxy, including
-any authorization information.
+`CONNECT` request, wait for a `200` response, and then proceed as normal,
+including sending a TLS handshake for `wss:` connections.
+
+To use this feature, call `driver.proxy(url)` where `url` is the origin of the
+proxy, including a username and password if required. This produces a duplex
+stream that you should pipe in and out of your TCP connection to the proxy
+server. When `proxy` emits `connect`, only _then_ should you connect `driver.io`
+to your TCP stream and call `driver.start()`. If you attempt to use `driver`
+before the proxy connection is established, you will end up writing data out of
+order and the protocol wail not work.
 
 ```js
-var driver = websocket.client('ws://www.example.com/socket', {
-  proxy: 'http://username:password@proxy.example.com'
+var net = require('net'),
+    websocket = require('websocket-driver');
+
+var driver = websocket.client('ws://www.example.com/socket'),
+    proxy  = driver.proxy('http://username:password@proxy.example.com'),
+    tcp    = net.createConnection(80, 'www.example.com');
+
+tcp.pipe(proxy).pipe(tcp, {end: false});
+
+tcp.on('connect', function() {
+  proxy.start();
+});
+
+proxy.on('connect', function() {
+  tcp.pipe(driver.io).pipe(tcp);
+  driver.start();
 });
 ```
 
-It is up to you to set up a TCP connection to the proxy yourself. If you prefer,
-you can perform the `CONNECT` logic yourself and then hand off the TCP
-connection to the client driver to continue the handshake process.
+In the event that proxy connection fails, `proxy` will emit an `error`. You can
+inspect the proxy's response via `proxy.statusCode` and `proxy.headers`.
+
+```js
+proxy.on('error', function(error) {
+  console.error(error.message);
+  console.log(proxy.statusCode);
+  console.log(proxy.headers);
+});
+```
+
+You can pass additional options to the proxy to control it. Before calling
+`proxy.start()` you can set custom headers using `proxy.setHeader()`:
+
+```js
+proxy.setHeader('User-Agent', 'node');
+proxy.start();
+```
+
+You can also configure the TLS handshake to the origin server by passing the
+`tls` option to the constructor:
+
+```
+var proxy = driver.proxy(proxyUrl, {
+  tls: {cert: fs.readFileSync('ca.crt')}
+});
+```
+
+The value of the `tls` option is a Node 'TLS options' object that will be passed
+directly to
+[`crypto.createCredentials()`](http://nodejs.org/api/crypto.html#crypto_crypto_createcredentials_details).
 
 
 ### Driver API

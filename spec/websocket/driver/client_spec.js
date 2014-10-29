@@ -128,38 +128,66 @@ test.describe("Client", function() { with(this) {
         }})
       }})
 
-      describe("using a proxy", function() { with(this) {
-        define("options", function() { return {proxy: "http://proxy.example.com"} })
-
-        it("sends a CONNECT request to the proxy", function() { with(this) {
-          expect(driver().io, "emit").given("data", buffer(
-              "CONNECT www.example.com:80 HTTP/1.1\r\n" +
-              "Host: www.example.com\r\n" +
-              "Connection: keep-alive\r\n" +
-              "Proxy-Connection: keep-alive\r\n" +
-              "\r\n"))
-          driver().start()
-        }})
-      }})
-
-      describe("using an authenticated proxy", function() { with(this) {
-        define("options", function() { return {proxy: "http://user:pass@proxy.example.com"} })
-
-        it("sends a CONNECT request to the proxy", function() { with(this) {
-          expect(driver().io, "emit").given("data", buffer(
-              "CONNECT www.example.com:80 HTTP/1.1\r\n" +
-              "Host: www.example.com\r\n" +
-              "Connection: keep-alive\r\n" +
-              "Proxy-Connection: keep-alive\r\n" +
-              "Proxy-Authorization: Basic dXNlcjpwYXNz\r\n" +
-              "\r\n"))
-          driver().start()
-        }})
-      }})
-
       it("changes the state to connecting", function() { with(this) {
         driver().start()
         assertEqual( "connecting", driver().getState() )
+      }})
+    }})
+  }})
+
+  describe("using a proxy", function() { with(this) {
+    it("sends a CONNECT request", function() { with(this) {
+      var proxy = driver().proxy("http://proxy.example.com")
+      expect(proxy, "emit").given("data", buffer(
+          "CONNECT www.example.com:80 HTTP/1.1\r\n" +
+          "Host: www.example.com\r\n" +
+          "Connection: keep-alive\r\n" +
+          "Proxy-Connection: keep-alive\r\n" +
+          "\r\n"))
+      proxy.start()
+    }})
+
+    it("sends an authenticated CONNECT request", function() { with(this) {
+      var proxy = driver().proxy("http://user:pass@proxy.example.com")
+      expect(proxy, "emit").given("data", buffer(
+          "CONNECT www.example.com:80 HTTP/1.1\r\n" +
+          "Host: www.example.com\r\n" +
+          "Connection: keep-alive\r\n" +
+          "Proxy-Connection: keep-alive\r\n" +
+          "Proxy-Authorization: Basic dXNlcjpwYXNz\r\n" +
+          "\r\n"))
+      proxy.start()
+    }})
+
+    it("sends a CONNECT request with custom headers", function() { with(this) {
+      var proxy = driver().proxy("http://user:pass@proxy.example.com")
+      proxy.setHeader("User-Agent", "Chrome")
+      expect(proxy, "emit").given("data", buffer(
+          "CONNECT www.example.com:80 HTTP/1.1\r\n" +
+          "Host: www.example.com\r\n" +
+          "Connection: keep-alive\r\n" +
+          "Proxy-Connection: keep-alive\r\n" +
+          "Proxy-Authorization: Basic dXNlcjpwYXNz\r\n" +
+          "User-Agent: Chrome\r\n" +
+          "\r\n"))
+      proxy.start()
+    }})
+
+    describe("receiving a response", function() { with(this) {
+      before(function() { with(this) {
+        this.proxy = driver().proxy("http://proxy.example.com")
+      }})
+
+      it("emits a 'connect' event when the proxy connects", function() { with(this) {
+        expect(proxy, "emit").given("connect")
+        expect(proxy, "emit").given("end")
+        proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n"))
+      }})
+
+      it("emits an 'error' event if the proxy does not connect", function() { with(this) {
+        expect(proxy, "emit").given("error", objectIncluding({message: "Can't establish a connection to the server at ws://www.example.com/socket"}))
+        expect(proxy, "emit").given("end")
+        proxy.write(new Buffer("HTTP/1.1 403 Forbidden\r\n\r\n"))
       }})
     }})
   }})
@@ -170,25 +198,7 @@ test.describe("Client", function() { with(this) {
     describe("using a proxy", function() { with(this) {
       define("options", function() { return {proxy: "http://www.example.com"} })
 
-      it("writes the handshake request when the proxy connects", function() { with(this) {
-        expect(driver().io, "emit").given("data", buffer(
-            "GET /socket HTTP/1.1\r\n" +
-            "Host: www.example.com\r\n" +
-            "Upgrade: websocket\r\n" +
-            "Connection: Upgrade\r\n" +
-            "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
-            "Sec-WebSocket-Version: 13\r\n" +
-            "\r\n"))
-        driver().parse(new Buffer("HTTP/1.1 200 OK\r\n\r\n"))
-      }})
-
-      it("emits an error if the proxy does not connect", function() { with(this) {
-        expect(driver().io, "emit").exactly(0)
-        driver().parse(new Buffer("HTTP/1.1 403 Forbidden\r\n\r\n"))
-        assertEqual( "Can't establish a connection to the server at ws://www.example.com/socket", error.message )
-        assertEqual( [1006, ""], close )
-        assertEqual( "closed", driver().getState() )
-      }})
+      
     }})
 
     describe("with a valid response", function() { with(this) {
