@@ -2,9 +2,9 @@ var WebSocket = require('../lib/faye/websocket'),
     fs = require('fs');
 
 var url   = process.argv[2],
-    proxy = process.argv[3],
+    proxy = {origin: process.argv[3], headers: {'User-Agent': 'Echo'}},
     ca    = fs.readFileSync(__dirname + '/../spec/server.crt'),
-    ws    = new WebSocket.Client(url, null, {proxy: proxy, ca: ca});
+    ws    = new WebSocket.Client(url, null, {proxy: proxy, tls: {ca: ca}});
 
 ws.onopen = function() {
   console.log('[socket open]');

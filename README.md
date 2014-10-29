@@ -118,13 +118,21 @@ The WebSocket client also lets you inspect the status and headers of the
 handshake response via its `statusCode` and `headers` properties.
 
 To connect via a proxy, set the `proxy` option to the HTTP origin of the proxy,
-including any authorization information:
+including any authorization information, custom headers and TLS config you
+require. Only the `origin` setting is required.
 
 ```js
 var ws = new WebSocket.Client('ws://www.example.com/', null, {
-  proxy: 'http://username:password@proxy.example.com'
+  proxy: {
+    origin:  'https://username:password@proxy.example.com',
+    headers: {'User-Agent': 'node'},
+    tls:     {cert: fs.readFileSync('client.cert')}
+  }
 });
 ```
+
+The `tls` value is a Node 'TLS options' object that will be passed to
+[`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback).
 
 
 ## Subprotocol negotiation
@@ -168,8 +176,18 @@ var ws = new WebSocket.Client(url, protocols, options);
   The default value is `2^26 - 1`, or 1 byte short of 64 MiB.
 * `ping` - an integer that sets how often the WebSocket should send ping
   frames, measured in seconds
-* `proxy` - the origin of an HTTP proxy, including a username and password if
-  required
+
+The client accepts some additional options:
+
+* `proxy` - settings for a proxy as described above
+* `tls` - a Node 'TLS options' object containing TLS settings for the origin
+  server, this will be passed to
+  [`crypto.createCredentials()`](http://nodejs.org/api/crypto.html#crypto_crypto_createcredentials_details)
+  if using a proxy and
+  [`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
+  if connecting directly
+* `ca` - (legacy) a shorthand for passing `{tls: {ca: value}}`
+
 
 ## WebSocket API
 
