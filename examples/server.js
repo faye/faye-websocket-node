@@ -4,7 +4,7 @@ var WebSocket = require('../lib/faye/websocket'),
     https     = require('https');
 
 var port   = process.argv[2] || 7000,
-    secure = process.argv[3] === 'ssl';
+    secure = process.argv[3] === 'tls';
 
 var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], {ping: 5});
