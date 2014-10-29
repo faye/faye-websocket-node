@@ -211,7 +211,7 @@ proxy.start();
 You can also configure the TLS handshake to the origin server, if you're making
 a `wss:` connection, by passing the `tls` option to the constructor:
 
-```
+```js
 var proxy = driver.proxy(proxyUrl, {
   tls: {cert: fs.readFileSync('client.crt')}
 });
