@@ -167,7 +167,7 @@ stream that you should pipe in and out of your TCP connection to the proxy
 server. When `proxy` emits `connect`, only _then_ should you connect `driver.io`
 to your TCP stream and call `driver.start()`. If you attempt to use `driver`
 before the proxy connection is established, you will end up writing data out of
-order and the protocol wail not work.
+order and the protocol will not work.
 
 ```js
 var net = require('net'),
