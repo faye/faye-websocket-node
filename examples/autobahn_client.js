@@ -2,7 +2,7 @@ var WebSocket = require('../lib/faye/websocket'),
     pace      = require('pace');
 
 var host  = 'ws://localhost:9001',
-    agent = 'Node ' + process.version,
+    agent = 'node-' + process.version,
     cases = 0,
     skip  = [];
 
