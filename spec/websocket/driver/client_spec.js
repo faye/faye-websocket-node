@@ -180,12 +180,14 @@ test.describe("Client", function() { with(this) {
 
       it("emits a 'connect' event when the proxy connects", function() { with(this) {
         expect(proxy, "emit").given("connect")
+        expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
         proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n"))
       }})
 
       it("emits an 'error' event if the proxy does not connect", function() { with(this) {
         expect(proxy, "emit").given("error", objectIncluding({message: "Can't establish a connection to the server at ws://www.example.com/socket"}))
+        expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
         proxy.write(new Buffer("HTTP/1.1 403 Forbidden\r\n\r\n"))
       }})
