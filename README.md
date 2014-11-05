@@ -164,10 +164,9 @@ including sending a TLS handshake for `wss:` connections.
 To use this feature, call `driver.proxy(url)` where `url` is the origin of the
 proxy, including a username and password if required. This produces a duplex
 stream that you should pipe in and out of your TCP connection to the proxy
-server. When `proxy` emits `connect`, only _then_ should you connect `driver.io`
-to your TCP stream and call `driver.start()`. If you attempt to use `driver`
-before the proxy connection is established, you will end up writing data out of
-order and the protocol will not work.
+server, _instead_ of using `driver.io`. You should also call `start()` on
+`proxy` rather than `driver`, but the rest of the `driver` API works the same as
+before.
 
 ```js
 var net = require('net'),
@@ -177,15 +176,14 @@ var driver = websocket.client('ws://www.example.com/socket'),
     proxy  = driver.proxy('http://username:password@proxy.example.com'),
     tcp    = net.connect(80, 'proxy.example.com');
 
-tcp.pipe(proxy).pipe(tcp, {end: false});
+tcp.pipe(proxy).pipe(tcp);
 
 tcp.on('connect', function() {
   proxy.start();
 });
 
-proxy.on('connect', function() {
-  tcp.pipe(driver.io).pipe(tcp);
-  driver.start();
+driver.messages.on('data', function(message) {
+  console.log('Got a message', message);
 });
 ```
 
@@ -218,8 +216,8 @@ var proxy = driver.proxy(proxyUrl, {
 ```
 
 The value of the `tls` option is a Node 'TLS options' object that will be passed
-directly to
-[`crypto.createCredentials()`](http://nodejs.org/api/crypto.html#crypto_crypto_createcredentials_details).
+to
+[`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
 
 
 ### Driver API
