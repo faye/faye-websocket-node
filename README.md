@@ -126,7 +126,7 @@ var ws = new WebSocket.Client('ws://www.example.com/', null, {
   proxy: {
     origin:  'https://username:password@proxy.example.com',
     headers: {'User-Agent': 'node'},
-    tls:     {cert: fs.readFileSync('client.cert')}
+    tls:     {cert: fs.readFileSync('client.crt')}
   }
 });
 ```
@@ -182,10 +182,7 @@ The client accepts some additional options:
 * `proxy` - settings for a proxy as described above
 * `tls` - a Node 'TLS options' object containing TLS settings for the origin
   server, this will be passed to
-  [`crypto.createCredentials()`](http://nodejs.org/api/crypto.html#crypto_crypto_createcredentials_details)
-  if using a proxy and
   [`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
-  if connecting directly
 * `ca` - (legacy) a shorthand for passing `{tls: {ca: value}}`
 
 
