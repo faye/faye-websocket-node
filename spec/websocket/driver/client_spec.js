@@ -201,12 +201,6 @@ test.describe("Client", function() { with(this) {
   describe("in the connecting state", function() { with(this) {
     before(function() { this.driver().start() })
 
-    describe("using a proxy", function() { with(this) {
-      define("options", function() { return {proxy: "http://www.example.com"} })
-
-      
-    }})
-
     describe("with a valid response", function() { with(this) {
       before(function() { this.driver().parse(new Buffer(this.response())) })
 
