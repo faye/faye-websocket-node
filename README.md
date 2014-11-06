@@ -124,7 +124,7 @@ require. Only the `origin` setting is required.
 ```js
 var ws = new WebSocket.Client('ws://www.example.com/', null, {
   proxy: {
-    origin:  'https://username:password@proxy.example.com',
+    origin:  'http://username:password@proxy.example.com',
     headers: {'User-Agent': 'node'},
     tls:     {cert: fs.readFileSync('client.crt')}
   }
