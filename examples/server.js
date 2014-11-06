@@ -8,7 +8,7 @@ var port   = process.argv[2] || 7000,
 
 var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], {ping: 5});
-  console.log('open', ws.url, ws.version, ws.protocol);
+  console.log('open', ws.url, ws.version, ws.protocol, request.headers);
 
   ws.pipe(ws);
 
