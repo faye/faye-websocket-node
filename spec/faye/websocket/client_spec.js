@@ -247,7 +247,7 @@ test.describe("Client", function() { with(this) {
 
   describe("with a proxy", function() { with(this) {
     before(function() {
-      // this.proxy_url = this.plain_text_proxy_url
+      this.proxy_url = this.plain_text_proxy_url
     })
 
     before(function() { this.proxy(this.proxy_port) })
