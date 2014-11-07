@@ -5,26 +5,26 @@ var ProxyServer = function(options) {
   var proxy = http.createServer();
   options   = options || {};
 
-  proxy.on('connect', function(request, socket, body) {
-    var parts = request.url.split(':'),
-        conn  = net.connect(parts[1], parts[0]);
+  var onConnect = function(request, frontend, body) {
+    var parts   = request.url.split(':'),
+        backend = net.connect(parts[1], parts[0]);
 
-    if (options.debug) {
-      console.log(request.method, request.url, request.headers);
-      socket.on('data', function(data) {
-        console.log('I', data);
-      });
-      conn.on('data', function(data) {
-        console.log('O', data);
-      });
-    }
+    frontend.pipe(backend);
+    backend.pipe(frontend);
 
-    socket.pipe(conn).pipe(socket);
-
-    conn.on('connect', function() {
-      socket.write('HTTP/1.1 200 OK\r\n\r\n');
+    backend.on('connect', function() {
+      frontend.write('HTTP/1.1 200 OK\r\n\r\n');
     });
-  });
+
+    if (!options.debug) return;
+    console.log(request.method, request.url, request.headers);
+
+    frontend.on('data', function(data) { console.log('I', data) });
+    backend.on( 'data', function(data) { console.log('O', data) });
+  };
+
+  proxy.on('connect', onConnect);
+  proxy.on('upgrade', onConnect);
 
   this._proxy = proxy;
 };
