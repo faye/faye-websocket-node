@@ -190,6 +190,9 @@ driver.messages.on('data', function(message) {
 });
 ```
 
+The proxy's `connect` event is also where you should perform a TLS handshake on
+your TCP stream, if you are connecting to a `wss:` endpoint.
+
 In the event that proxy connection fails, `proxy` will emit an `error`. You can
 inspect the proxy's response via `proxy.statusCode` and `proxy.headers`.
 
