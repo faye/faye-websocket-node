@@ -183,7 +183,7 @@ test.describe("Client", function() { with(this) {
         assertEqual( true, proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n")) )
       }})
 
-      it("emits a WebSocket handshake when the proxy connects", function() { with(this) {
+      it("emits a 'connect' event when the proxy connects", function() { with(this) {
         expect(proxy, "emit").given("connect")
         expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
