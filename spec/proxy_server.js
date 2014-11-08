@@ -1,9 +1,17 @@
-var http = require('http'),
-    net  = require('net');
+var fs    = require('fs'),
+    http  = require('http'),
+    https = require('https'),
+    net   = require('net');
 
 var ProxyServer = function(options) {
-  var proxy = http.createServer();
-  options   = options || {};
+  var proxy = options.tls
+            ? https.createServer({
+                key:  fs.readFileSync(__dirname + '/server.key'),
+                cert: fs.readFileSync(__dirname + '/server.crt')
+              })
+            : http.createServer();
+
+  options = options || {};
 
   var onConnect = function(request, frontend, body) {
     var parts   = request.url.split(':'),

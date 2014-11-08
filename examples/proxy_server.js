@@ -1,4 +1,7 @@
 var ProxyServer = require('../spec/proxy_server');
 
-var proxy = new ProxyServer({debug: true});
-proxy.listen(process.argv[2]);
+var port   = process.argv[2],
+    secure = process.argv[3] === 'tls',
+    proxy  = new ProxyServer({debug: true, tls: secure});
+
+proxy.listen(port);

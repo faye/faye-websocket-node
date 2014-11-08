@@ -16,8 +16,8 @@ var WebSocketSteps = test.asyncSteps({
     process.nextTick(callback)
   },
 
-  proxy: function(port, callback) {
-    this._proxyServer = new ProxyServer()
+  proxy: function(port, secure, callback) {
+    this._proxyServer = new ProxyServer({tls: secure})
     this._proxyServer.listen(port)
     process.nextTick(callback)
   },
@@ -31,6 +31,8 @@ var WebSocketSteps = test.asyncSteps({
     var done = false,
         self = this,
 
+        tlsOptions = { ca: fs.readFileSync(__dirname + '/../../server.crt') },
+
         resume = function(open) {
                    if (done) return
                    done = true
@@ -39,8 +41,8 @@ var WebSocketSteps = test.asyncSteps({
                  }
 
     this._ws = new Client(url, protocols, {
-      proxy: { origin: this.proxy_url },
-      tls:   { ca: fs.readFileSync(__dirname + '/../../server.crt') }
+      proxy: { origin: this.proxy_url, tls: tlsOptions },
+      tls:   tlsOptions
     })
 
     this._ws.onopen  = function() { resume(true)  }
@@ -138,14 +140,15 @@ test.describe("Client", function() { with(this) {
   include(WebSocketSteps)
 
   before(function() {
-    this.protocols            = ["foo", "echo"]
+    this.protocols             = ["foo", "echo"]
 
-    this.plain_text_url       = "ws://localhost:4180/bayeux"
-    this.secure_url           = "wss://localhost:4180/bayeux"
-    this.port                 = 4180
+    this.plain_text_url        = "ws://localhost:4180/bayeux"
+    this.secure_url            = "wss://localhost:4180/bayeux"
+    this.port                  = 4180
 
-    this.plain_text_proxy_url = "http://localhost:4181"
-    this.proxy_port           = 4181
+    this.plain_text_proxy_url  = "http://localhost:4181"
+    this.secure_text_proxy_url = "https://localhost:4181"
+    this.proxy_port            = 4181
   })
 
   sharedBehavior("socket client", function() { with(this) {
@@ -250,7 +253,18 @@ test.describe("Client", function() { with(this) {
       this.proxy_url = this.plain_text_proxy_url
     })
 
-    before(function() { this.proxy(this.proxy_port) })
+    before(function() { this.proxy(this.proxy_port, false) })
+    after (function() { this.stop_proxy() })
+
+    behavesLike("socket server")
+  }})
+
+  describe("with a secure proxy", function() { with(this) {
+    before(function() {
+      this.proxy_url = this.secure_text_proxy_url
+    })
+
+    before(function() { this.proxy(this.proxy_port, true) })
     after (function() { this.stop_proxy() })
 
     behavesLike("socket server")
