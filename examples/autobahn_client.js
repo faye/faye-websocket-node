@@ -17,13 +17,14 @@ socket.onmessage = function(event) {
 
 socket.onclose = function() {
   var runCase = function(n) {
-    progress.op();
-
     if (n > cases) {
       socket = new WebSocket.Client(host + '/updateReports?agent=' + encodeURIComponent(agent));
       socket.onclose = process.exit;
+      return;
+    }
+    progress.op();
 
-    } else if (skip.indexOf(n) >= 0) {
+    if (skip.indexOf(n) >= 0) {
       runCase(n + 1);
 
     } else {
