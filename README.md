@@ -158,15 +158,13 @@ was sent back by the server:
 
 The client driver supports connections via HTTP proxies using the `CONNECT`
 method. Instead of sending the WebSocket handshake immediately, it will send a
-`CONNECT` request, wait for a `200` response, and then proceed as normal,
-including sending a TLS handshake for `wss:` connections.
+`CONNECT` request, wait for a `200` response, and then proceed as normal.
 
 To use this feature, call `driver.proxy(url)` where `url` is the origin of the
 proxy, including a username and password if required. This produces a duplex
 stream that you should pipe in and out of your TCP connection to the proxy
-server, _instead_ of using `driver.io`. You should also call `start()` on
-`proxy` rather than `driver`, but the rest of the `driver` API works the same as
-before.
+server. When the proxy emits `connect`, you can then pipe `driver.io` to your
+TCP stream and call `driver.start()`.
 
 ```js
 var net = require('net'),
@@ -176,10 +174,15 @@ var driver = websocket.client('ws://www.example.com/socket'),
     proxy  = driver.proxy('http://username:password@proxy.example.com'),
     tcp    = net.connect(80, 'proxy.example.com');
 
-tcp.pipe(proxy).pipe(tcp);
+tcp.pipe(proxy).pipe(tcp, {end: false});
 
 tcp.on('connect', function() {
   proxy.start();
+});
+
+proxy.on('connect', function() {
+  driver.io.pipe(tcp).pipe(driver.io);
+  driver.start();
 });
 
 driver.messages.on('data', function(message) {
@@ -198,26 +201,13 @@ proxy.on('error', function(error) {
 });
 ```
 
-You can pass additional options to the proxy to control it. Before calling
-`proxy.start()` you can set custom headers using `proxy.setHeader()`:
+Before calling `proxy.start()` you can set custom headers using
+`proxy.setHeader()`:
 
 ```js
 proxy.setHeader('User-Agent', 'node');
 proxy.start();
 ```
-
-You can also configure the TLS handshake to the origin server, if you're making
-a `wss:` connection, by passing the `tls` option to the constructor:
-
-```js
-var proxy = driver.proxy(proxyUrl, {
-  tls: {cert: fs.readFileSync('client.crt')}
-});
-```
-
-The value of the `tls` option is a Node 'TLS options' object that will be passed
-to
-[`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
 
 
 ### Driver API

@@ -178,20 +178,21 @@ test.describe("Client", function() { with(this) {
         this.proxy = driver().proxy("http://proxy.example.com")
       }})
 
+      it("returns true when the response is written", function() { with(this) {
+        // this prevents downstream connections suddenly closing for no reason
+        assertEqual( true, proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n")) )
+      }})
+
       it("emits a WebSocket handshake when the proxy connects", function() { with(this) {
-        expect(proxy, "emit").given("data", buffer(
-            "GET /socket HTTP/1.1\r\n" +
-            "Host: www.example.com\r\n" +
-            "Upgrade: websocket\r\n" +
-            "Connection: Upgrade\r\n" +
-            "Sec-WebSocket-Key: 2vBVWg4Qyk3ZoM/5d3QD9Q==\r\n" +
-            "Sec-WebSocket-Version: 13\r\n" +
-            "\r\n"))
+        expect(proxy, "emit").given("connect")
+        expect(proxy, "emit").given("close")
+        expect(proxy, "emit").given("end")
         proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n"))
       }})
 
       it("emits an 'error' event if the proxy does not connect", function() { with(this) {
         expect(proxy, "emit").given("error", objectIncluding({message: "Can't establish a connection to the server at ws://www.example.com/socket"}))
+        expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
         proxy.write(new Buffer("HTTP/1.1 403 Forbidden\r\n\r\n"))
       }})
