@@ -8,18 +8,18 @@ var url     = process.argv[2],
     ws      = new WebSocket.Client(url, null, {headers: headers, proxy: proxy, tls: {ca: ca}});
 
 ws.onopen = function() {
-  console.log('[socket open]', ws.headers);
+  console.log('[open]', ws.headers);
   ws.send('mic check');
 };
 
 ws.onclose = function(close) {
-  console.log('[socket close]', close.code, close.reason);
+  console.log('[close]', close.code, close.reason);
 };
 
 ws.onerror = function(error) {
-  console.log('[socket error]', error.message);
+  console.log('[error]', error.message);
 };
 
 ws.onmessage = function(message) {
-  console.log('[socket message]', message.data);
+  console.log('[message]', message.data);
 };
