@@ -1,4 +1,4 @@
-### 0.4.0 / 2014-10-27
+### 0.4.0 / 2014-11-08
 
 * Support connection via HTTP proxies using `CONNECT`
 
