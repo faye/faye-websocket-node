@@ -1,3 +1,8 @@
+### 0.8.1 / 2014-11-12
+
+* Send the correct hostname when upgrading a connection to TLS
+
+
 ### 0.8.0 / 2014-11-08
 
 * Support connections via HTTP proxies
