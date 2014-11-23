@@ -3,6 +3,7 @@ var net       = require('net'),
 
 var server = net.createServer(function(connection) {
   var driver = websocket.server();
+  driver.addExtension(websocket.ext.PermessageDeflate);
 
   driver.on('connect', function() {
     if (websocket.isWebSocket(driver)) driver.start();
