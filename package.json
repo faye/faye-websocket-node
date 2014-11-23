@@ -6,7 +6,7 @@
 , "license"         : "MIT"
 
 , "version"         : "0.4.0"
-, "engines"         : {"node": ">=0.4.0"}
+, "engines"         : {"node": ">=0.6.0"}
 , "main"            : "./lib/websocket/driver"
 , "devDependencies" : {"jstest": ""}
 
