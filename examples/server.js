@@ -1,13 +1,15 @@
 var WebSocket = require('../lib/faye/websocket'),
+    deflate   = require('permessage-deflate'),
     fs        = require('fs'),
     http      = require('http'),
     https     = require('https');
 
-var port   = process.argv[2] || 7000,
-    secure = process.argv[3] === 'tls';
+var port    = process.argv[2] || 7000,
+    secure  = process.argv[3] === 'tls',
+    options = {extensions: [deflate], ping: 5};
 
 var upgradeHandler = function(request, socket, head) {
-  var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], {ping: 5});
+  var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], options);
   console.log('[open]', ws.url, ws.version, ws.protocol, request.headers);
 
   ws.pipe(ws);
