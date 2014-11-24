@@ -1,13 +1,14 @@
 var WebSocket = require('../lib/faye/websocket'),
+    deflate   = require('permessage-deflate'),
     pace      = require('pace');
 
-var host  = 'ws://localhost:9001',
-    agent = 'node-' + process.version,
-    cases = 0,
-    skip  = [];
+var host    = 'ws://localhost:9001',
+    agent   = 'node-' + process.version,
+    cases   = 0,
+    options = {extensions: [deflate]};
 
 var socket = new WebSocket.Client(host + '/getCaseCount'),
-    progress;
+    url, progress;
 
 socket.onmessage = function(event) {
   console.log('Total cases to run: ' + event.data);
@@ -16,23 +17,23 @@ socket.onmessage = function(event) {
 };
 
 socket.onclose = function() {
-  var runCase = function(n) {
-    if (n > cases) {
-      socket = new WebSocket.Client(host + '/updateReports?agent=' + encodeURIComponent(agent));
-      socket.onclose = process.exit;
-      return;
-    }
-    progress.op();
-
-    if (skip.indexOf(n) >= 0) {
-      runCase(n + 1);
-
-    } else {
-      socket = new WebSocket.Client(host + '/runCase?case=' + n + '&agent=' + encodeURIComponent(agent));
-      socket.pipe(socket);
-      socket.on('close', function() { runCase(n + 1) });
-    }
-  };
-
   runCase(1);
+};
+
+var runCase = function(n) {
+  if (n > cases) {
+    url = host + '/updateReports?agent=' + encodeURIComponent(agent);
+    socket = new WebSocket.Client(url);
+    socket.onclose = process.exit;
+    return;
+  }
+
+  url = host + '/runCase?case=' + n + '&agent=' + encodeURIComponent(agent);
+  socket = new WebSocket.Client(url, null, options);
+  socket.pipe(socket);
+
+  socket.on('close', function() {
+    progress.op();
+    runCase(n + 1);
+  });
 };
