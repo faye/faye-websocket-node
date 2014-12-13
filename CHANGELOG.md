@@ -1,3 +1,7 @@
+### 0.5.0 / 2014-12-13
+
+* Support protocol extensions via the websocket-extensions module
+
 ### 0.4.0 / 2014-11-08
 
 * Support connection via HTTP proxies using `CONNECT`

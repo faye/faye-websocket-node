@@ -14,6 +14,9 @@ hook this module up to some I/O object, it will do all of this for you:
 * Generate and send both server- and client-side handshakes
 * Recognize when the handshake phase completes and the WS protocol begins
 * Negotiate subprotocol selection based on `Sec-WebSocket-Protocol`
+* Negotiate and use extensions via the
+  [websocket-extensions](https://github.com/faye/websocket-extensions-node)
+  module
 * Buffer sent messages until the handshake process is finished
 * Deal with proxies that defer delivery of the draft-76 handshake body
 * Notify you when the socket is open and closed and when messages arrive
@@ -277,6 +280,13 @@ describing the error.
 
 Sets the callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
+
+#### `driver.addExtension(extension)`
+
+Registers a protocol extension whose operation will be negotiated via the
+`Sec-WebSocket-Extensions` header. `extension` is any extension compatible with
+the [websocket-extensions](https://github.com/faye/websocket-extensions-node)
+framework.
 
 #### `driver.setHeader(name, value)`
 
