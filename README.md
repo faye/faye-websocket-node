@@ -157,6 +157,22 @@ If the client and server agree on a protocol, both the client- and server-side
 socket objects expose the selected protocol through the `ws.protocol` property.
 
 
+## Protocol extensions
+
+faye-websocket is based on the
+[websocket-extensions](https://github.com/faye/websocket-extensions-node)
+framework that allows extensions to be negotiated via the
+`Sec-WebSocket-Extensions` header. To add extensions to a connection, pass an
+array of extensions to the `:extensions` option. For example, to add
+[permessage-deflate](https://github.com/faye/permessage-deflate-node):
+
+```js
+var deflate = require('permessage-deflate');
+
+var ws = new WebSocket(request, null, {extensions: [deflate]});
+```
+
+
 ## Initialization options
 
 Both the server- and client-side classes allow an options object to be passed
@@ -170,6 +186,9 @@ var ws = new WebSocket.Client(url, protocols, options);
 `protocols` is an array of subprotocols as described above, or `null`.
 `options` is an optional object containing any of these fields:
 
+* `extensions` - an array of
+  [websocket-extensions](https://github.com/faye/websocket-extensions-node)
+  compatible extensions, as described above
 * `headers` - an object containing key-value pairs representing HTTP headers to
   be sent during the handshake process
 * `maxLength` - the maximum allowed size of incoming message frames, in bytes.

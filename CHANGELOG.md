@@ -1,3 +1,8 @@
+### 0.9.0 / 2014-12-13
+
+* Allow protocol extensions to be passed into websocket-extensions
+
+
 ### 0.8.1 / 2014-11-12
 
 * Send the correct hostname when upgrading a connection to TLS
