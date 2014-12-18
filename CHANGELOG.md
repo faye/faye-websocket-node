@@ -1,3 +1,7 @@
+### 0.5.1 / 2014-12-18
+
+* Don't allow drivers to be created with unrecognized options
+
 ### 0.5.0 / 2014-12-13
 
 * Support protocol extensions via the websocket-extensions module
