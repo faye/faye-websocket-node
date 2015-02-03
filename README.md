@@ -169,7 +169,7 @@ array of extensions to the `:extensions` option. For example, to add
 ```js
 var deflate = require('permessage-deflate');
 
-var ws = new WebSocket(request, null, {extensions: [deflate]});
+var ws = new WebSocket(request, socket, body, null, {extensions: [deflate]});
 ```
 
 
