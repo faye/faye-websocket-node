@@ -451,8 +451,8 @@ test.describe("Hybi", function() { with(this) {
         driver().frame("dropped")
       }})
 
-      it("returns false", function() { with(this) {
-        assertEqual( false, driver().frame("wut") )
+      it("returns true", function() { with(this) {
+        assertEqual( true, driver().frame("wut") )
       }})
     }})
 
