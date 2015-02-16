@@ -211,7 +211,7 @@ test.describe("Client", function() { with(this) {
 
     it("can be closed before connecting", function() { with(this) {
       open_socket_and_close_it_fast(socket_url, protocols)
-      wait(10)
+      wait(100)
       check_closed()
       check_never_opened()
       check_not_readable()
