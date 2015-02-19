@@ -1,3 +1,9 @@
+### 0.5.2 / 2015-02-19
+
+* Fix compatibility with the HTTP parser on io.js
+* Use `websocket-extensions` to make sure messages and close frames are kept in order
+* Don't emit multiple `error` events
+
 ### 0.5.1 / 2014-12-18
 
 * Don't allow drivers to be created with unrecognized options
