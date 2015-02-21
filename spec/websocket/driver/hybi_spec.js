@@ -191,6 +191,30 @@ test.describe("Hybi", function() { with(this) {
       }})
     }})
 
+    describe("pong", function() { with(this) {
+        it("does not write to the socket", function() { with(this) {
+            expect(driver().io, "emit").exactly(0)
+            driver().pong()
+        }})
+
+        it("returns true", function() { with(this) {
+            assertEqual( true, driver().pong() )
+        }})
+
+        it("queues the pong until the handshake has been sent", function() { with(this) {
+            expect(driver().io, "emit").given("data", buffer(
+                "HTTP/1.1 101 Switching Protocols\r\n" +
+                "Upgrade: websocket\r\n" +
+                "Connection: Upgrade\r\n" +
+                "Sec-WebSocket-Accept: JdiiuafpBKRqD7eol0y4vJDTsTs=\r\n" +
+                "\r\n"))
+            expect(driver().io, "emit").given("data", buffer([0x8a, 0]))
+
+            driver().pong()
+            driver().start()
+        }})
+    }})
+
     describe("close", function() { with(this) {
       it("does not write anything to the socket", function() { with(this) {
         expect(driver().io, "emit").exactly(0)
