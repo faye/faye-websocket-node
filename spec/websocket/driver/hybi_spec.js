@@ -449,6 +449,17 @@ test.describe("Hybi", function() { with(this) {
       }})
     }})
 
+    describe("pong", function() { with(this) {
+      it("writes a pong frame to the socket", function() { with(this) {
+        driver().pong("mic check")
+        assertEqual([0x8a, 0x09, 0x6d, 0x69, 0x63, 0x20, 0x63, 0x68, 0x65, 0x63, 0x6b], collector().bytes)
+      }})
+
+      it("returns true", function() { with(this) {
+        assertEqual(true, driver().pong())
+      }})
+    }})
+
     describe("close", function() { with(this) {
       it("writes a close frame to the socket", function() { with(this) {
         driver().close("<%= reasons %>", 1003)
@@ -522,6 +533,17 @@ test.describe("Hybi", function() { with(this) {
       }})
     }})
 
+    describe("pong", function() { with(this) {
+      it("does not write to the socket", function() { with(this) {
+        expect(driver().io, "emit").exactly(0)
+        driver().pong()
+      }})
+
+      it("returns false", function() { with(this) {
+        assertEqual( false, driver().pong() )
+      }})
+    }})
+
     describe("close", function() { with(this) {
       it("does not write to the socket", function() { with(this) {
         expect(driver().io, "emit").exactly(0)
@@ -579,6 +601,17 @@ test.describe("Hybi", function() { with(this) {
 
       it("returns false", function() { with(this) {
         assertEqual( false, driver().ping() )
+      }})
+    }})
+
+    describe("pong", function() { with(this) {
+      it("does not write to the socket", function() { with(this) {
+        expect(driver().io, "emit").exactly(0)
+        driver().pong()
+      }})
+
+      it("returns false", function() { with(this) {
+        assertEqual( false, driver().pong() )
       }})
     }})
 
