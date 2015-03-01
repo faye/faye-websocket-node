@@ -120,7 +120,7 @@ including any authorization information, custom headers and TLS config you
 require. Only the `origin` setting is required.
 
 ```js
-var ws = new WebSocket.Client('ws://www.example.com/', null, {
+var ws = new WebSocket.Client('ws://www.example.com/', [], {
   proxy: {
     origin:  'http://username:password@proxy.example.com',
     headers: {'User-Agent': 'node'},
@@ -167,7 +167,7 @@ array of extensions to the `:extensions` option. For example, to add
 ```js
 var deflate = require('permessage-deflate');
 
-var ws = new WebSocket(request, socket, body, null, {extensions: [deflate]});
+var ws = new WebSocket(request, socket, body, [], {extensions: [deflate]});
 ```
 
 

@@ -5,7 +5,7 @@ var url     = process.argv[2],
     headers = {Origin: 'http://faye.jcoglan.com'},
     ca      = fs.readFileSync(__dirname + '/../spec/server.crt'),
     proxy   = {origin: process.argv[3], headers: {'User-Agent': 'Echo'}, tls: {ca: ca}},
-    ws      = new WebSocket.Client(url, null, {headers: headers, proxy: proxy, tls: {ca: ca}});
+    ws      = new WebSocket.Client(url, [], {headers: headers, proxy: proxy, tls: {ca: ca}});
 
 ws.onopen = function() {
   console.log('[open]', ws.headers);

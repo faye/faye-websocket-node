@@ -25,7 +25,7 @@ var runCase = function(n) {
   }
 
   url = host + '/runCase?case=' + n + '&agent=' + agent;
-  socket = new WebSocket.Client(url, null, options);
+  socket = new WebSocket.Client(url, [], options);
   socket.pipe(socket);
 
   socket.on('close', function() {
