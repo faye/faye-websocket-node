@@ -1,3 +1,7 @@
+### 0.9.4 / 2015-03-08
+
+* Don't send input to the driver before `start()` is called
+
 ### 0.9.3 / 2015-02-19
 
 * Make sure the TCP socket is not left open when closing the connection
