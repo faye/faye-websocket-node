@@ -490,6 +490,11 @@ test.describe("Hybi", function() { with(this) {
       it("changes the state to closed", function() { with(this) {
         assertEqual( "closed", driver().getState() )
       }})
+
+      it("does not write another close frame", function() { with(this) {
+        expect(driver().io, "emit").exactly(0)
+        this.driver().parse([0x88, 0x04, 0x03, 0xe9, 0x4f, 0x4b])
+      }})
     }})
   }})
 
