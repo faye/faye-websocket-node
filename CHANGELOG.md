@@ -1,3 +1,8 @@
+### 0.5.4 / 2015-03-12
+
+* Don't emit extra close frames if we receive a close frame after we already
+  sent one
+
 ### 0.5.3 / 2015-02-22
 
 * Don't treat incoming data as WebSocket frames if a client driver is closed
