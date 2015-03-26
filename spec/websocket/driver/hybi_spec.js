@@ -79,6 +79,37 @@ test.describe("Hybi", function() { with(this) {
         }})
       }})
 
+      describe("with invalid extensions", function() { with(this) {
+        before(function() { with(this) {
+          request().headers["sec-websocket-extensions"] = "x-webkit- -frame"
+        }})
+
+        it("does not write a handshake", function() { with(this) {
+          expect(driver().io, "emit").exactly(0)
+          driver().start()
+        }})
+
+        it("does not trigger the onopen event", function() { with(this) {
+          driver().start()
+          assertEqual( false, open )
+        }})
+
+        it("triggers the onerror event", function() { with(this) {
+          driver().start()
+          assertEqual( "Invalid Sec-WebSocket-Extensions header: x-webkit- -frame", error.message )
+        }})
+
+        it("triggers the onclose event", function() { with(this) {
+          driver().start()
+          assertEqual( [1002, "Invalid Sec-WebSocket-Extensions header: x-webkit- -frame"], close )
+        }})
+
+        it("changes the state to closed", function() { with(this) {
+          driver().start()
+          assertEqual( "closed", driver().getState() )
+        }})
+      }})
+
       describe("with custom headers", function() { with(this) {
         before(function() { with(this) {
           driver().setHeader("Authorization", "Bearer WAT")
