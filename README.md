@@ -298,7 +298,7 @@ when the headers are serialized and sent.
 
 Initiates the protocol by sending the handshake - either the response for a
 server-side driver or the request for a client-side one. This should be the
-first method you invoke.  Returns `true` iff a handshake was sent.
+first method you invoke.  Returns `true` if and only if a handshake was sent.
 
 #### `driver.parse(string)`
 
