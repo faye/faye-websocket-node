@@ -1,5 +1,5 @@
 var net       = require('net'),
-    websocket = require('../lib/websocket/driver'),
+    websocket = require('..'),
     deflate   = require('permessage-deflate');
 
 var server = net.createServer(function(connection) {
