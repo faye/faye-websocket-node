@@ -1,7 +1,9 @@
-### 0.5.4 / 2015-03-12
+### 0.5.4 / 2015-03-29
 
 * Don't emit extra close frames if we receive a close frame after we already
   sent one
+* Fail the connection when the driver receives an invalid
+  `Sec-WebSocket-Extensions` header
 
 ### 0.5.3 / 2015-02-22
 
@@ -11,7 +13,8 @@
 ### 0.5.2 / 2015-02-19
 
 * Fix compatibility with the HTTP parser on io.js
-* Use `websocket-extensions` to make sure messages and close frames are kept in order
+* Use `websocket-extensions` to make sure messages and close frames are kept in
+  order
 * Don't emit multiple `error` events
 
 ### 0.5.1 / 2014-12-18
@@ -37,7 +40,8 @@
 
 ### 0.3.4 / 2014-05-08
 
-* Don't hold memory-leaking references to I/O buffers after they have been parsed
+* Don't hold memory-leaking references to I/O buffers after they have been
+  parsed
 
 ### 0.3.3 / 2014-04-24
 
@@ -45,7 +49,8 @@
 
 ### 0.3.2 / 2013-12-29
 
-* Expand `maxLength` to cover sequences of continuation frames and `draft-{75,76}`
+* Expand `maxLength` to cover sequences of continuation frames and
+  `draft-{75,76}`
 * Decrease default maximum frame buffer size to 64MB
 * Stop parsing when the protocol enters a failure mode, to save CPU cycles
 
