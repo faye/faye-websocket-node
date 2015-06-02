@@ -5,11 +5,11 @@
 , "keywords"        : ["websocket", "eventsource"]
 , "license"         : "MIT"
 
-, "version"         : "0.7.0"
+, "version"         : "0.9.4"
 , "engines"         : {"node": ">=0.4.0"}
 , "main"            : "./lib/faye/websocket"
-, "dependencies"    : {"websocket-driver": ">=0.3.0"}
-, "devDependencies" : {"jstest": "", "pace": ""}
+, "dependencies"    : {"websocket-driver": ">=0.5.1"}
+, "devDependencies" : {"jstest": "", "pace": "", "permessage-deflate": ""}
 
 , "scripts"         : {"test": "jstest spec/runner.js"}
 
@@ -19,4 +19,3 @@
 
 , "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
 }
-
