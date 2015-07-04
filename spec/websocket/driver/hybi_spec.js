@@ -385,6 +385,26 @@ test.describe("Hybi", function() { with(this) {
         driver().parse([0x89, 0x04, 0x4f, 0x48, 0x41, 0x49])
         assertEqual( [0x8a, 0x04, 0x4f, 0x48, 0x41, 0x49], collector().bytes )
       }})
+
+      describe("if a message listener throws an error", function() { with(this) {
+        before(function() { with(this) {
+          driver().on("message", function() { throw new Error("event error") })
+          driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
+        }})
+
+        it("triggers the onerror event", function() { with(this) {
+          assertEqual( "event error", error.message )
+        }})
+
+        it("triggers the onclose event", function() { with(this) {
+          assertEqual( [1011, "event error"], close )
+        }})
+
+        it("changes the state to closed", function() { with(this) {
+          driver().close()
+          assertEqual( "closed", driver().getState() )
+        }})
+      }})
     }})
 
     describe("frame", function() { with(this) {
