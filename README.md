@@ -259,11 +259,11 @@ the `driver.io` stream.
 
 #### `driver.on('open', function(event) {})`
 
-Sets the callback to execute when the socket becomes open.
+Adds a callback to execute when the socket becomes open.
 
 #### `driver.on('message', function(event) {})`
 
-Sets the callback to execute when a message is received. `event` will have a
+Adds a callback to execute when a message is received. `event` will have a
 `data` attribute containing either a string in the case of a text message or a
 `Buffer` in the case of a binary message.
 
@@ -272,13 +272,13 @@ which emits strings for text messages and buffers for binary messages.
 
 #### `driver.on('error', function(event) {})`
 
-Sets the callback to execute when a protocol error occurs due to the other peer
+Adds a callback to execute when a protocol error occurs due to the other peer
 sending an invalid byte sequence. `event` will have a `message` attribute
 describing the error.
 
 #### `driver.on('close', function(event) {})`
 
-Sets the callback to execute when the socket becomes closed. The `event` object
+Adds a callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
 
 #### `driver.addExtension(extension)`
