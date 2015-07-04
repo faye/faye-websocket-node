@@ -222,7 +222,7 @@ Both server- and client-side `WebSocket` objects support the following API.
   that closed the connection.
 * <b>`send(message)`</b> accepts either a `String` or a `Buffer` and sends a
   text or binary message over the connection to the other peer.
-* <b>`ping(message = '', function() {})`</b> sends a ping frame with an optional
+* <b>`ping(message, function() {})`</b> sends a ping frame with an optional
   message and fires the callback when a matching pong is received.
 * <b>`close(code, reason)`</b> closes the connection, sending the given status
   code and reason text, both of which are optional.
