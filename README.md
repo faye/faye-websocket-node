@@ -21,7 +21,7 @@ this module up to some I/O object, it will do all of this for you:
 * Deal with proxies that defer delivery of the draft-76 handshake body
 * Notify you when the socket is open and closed and when messages arrive
 * Recombine fragmented messages
-* Dispatch text, binary, ping and close frames
+* Dispatch text, binary, ping, pong and close frames
 * Manage the socket-closing handshake process
 * Automatically reply to ping frames with a matching pong
 * Apply masking to messages sent by the client
@@ -329,6 +329,15 @@ Sends a ping frame over the socket, queueing it if necessary. `string` and the
 callback are both optional. If a callback is given, it will be invoked when the
 socket receives a pong frame whose content matches `string`. Returns `false` if
 frames can no longer be sent, or if the driver does not support ping/pong.
+
+#### `driver.pong(string = '')`
+
+Sends a pong frame over the socket, queueing it if necessary. `string` is
+optional. Returns `false` if frames can no longer be sent, or if the driver does
+not support ping/pong.
+
+You don't need to call this when a ping frame is received; pings are replied to
+automatically by the driver. This method is for sending unsolicited pongs.
 
 #### `driver.close()`
 
