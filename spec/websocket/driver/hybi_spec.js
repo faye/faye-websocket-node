@@ -386,23 +386,25 @@ test.describe("Hybi", function() { with(this) {
         assertEqual( [0x8a, 0x04, 0x4f, 0x48, 0x41, 0x49], collector().bytes )
       }})
 
-      describe("if a message listener throws an error", function() { with(this) {
+      describe("when a message listener throws an error", function() { with(this) {
         before(function() { with(this) {
-          driver().on("message", function() { throw new Error("event error") })
-          driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
+          this.messages = []
+
+          driver().on("message", function(msg) {
+            messages.push(msg.data)
+            throw new Error("an error")
+          })
         }})
 
-        it("triggers the onerror event", function() { with(this) {
-          assertEqual( "event error", error.message )
+        it("is not trapped by the parser", function() { with(this) {
+          var buffer = [0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f]
+          assertThrows(Error, function() { driver().parse(buffer) })
         }})
 
-        it("triggers the onclose event", function() { with(this) {
-          assertEqual( [1011, "event error"], close )
-        }})
-
-        it("changes the state to closed", function() { with(this) {
-          driver().close()
-          assertEqual( "closed", driver().getState() )
+        it("parses unmasked text frames without dropping input", function() { with(this) {
+          try { driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x81, 0x05]) } catch (e) {}
+          try { driver().parse([0x57, 0x6f, 0x72, 0x6c, 0x64]) } catch (e) {}
+          assertEqual( ["Hello", "World"], messages )
         }})
       }})
     }})
