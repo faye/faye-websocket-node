@@ -42,6 +42,28 @@ test.describe("draft-75", function() { with(this) {
           driver().parse([0x6c, 0x6f, 0xff])
           assertEqual( "Hello", message )
         }})
+
+        describe("when a message listener throws an error", function() { with(this) {
+          before(function() { with(this) {
+            this.messages = []
+
+            driver().on("message", function(msg) {
+              messages.push(msg.data)
+              throw new Error("an error")
+            })
+          }})
+
+          it("is not trapped by the parser", function() { with(this) {
+            var buffer = [0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff]
+            assertThrows(Error, function() { driver().parse(buffer) })
+          }})
+
+          it("parses text frames without dropping input", function() { with(this) {
+            try { driver().parse([0x00, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0xff, 0x00, 0x57]) } catch (e) {}
+            try { driver().parse([0x6f, 0x72, 0x6c, 0x64, 0xff]) } catch (e) {}
+            assertEqual( ["Hello", "World"], messages )
+          }})
+        }})
       }})
 
       describe("frame", function() { with(this) {
