@@ -1,3 +1,8 @@
+### 0.6.0 / 2015-07-08
+
+* Allow the parser to recover cleanly if event listeners raise an error
+* Add a `pong` method for sending unsolicited pong frames
+
 ### 0.5.4 / 2015-03-29
 
 * Don't emit extra close frames if we receive a close frame after we already
