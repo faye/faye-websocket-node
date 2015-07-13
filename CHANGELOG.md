@@ -1,3 +1,8 @@
+### 0.6.1 / 2015-07-13
+
+* Use the `buffer.{read,write}UInt{16,32}BE` methods for reading/writing numbers
+  to buffers rather than including duplicate logic for this
+
 ### 0.6.0 / 2015-07-08
 
 * Allow the parser to recover cleanly if event listeners raise an error
