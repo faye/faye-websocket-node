@@ -595,6 +595,20 @@ test.describe("Hybi", function() { with(this) {
         this.driver().parse([0x88, 0x04, 0x03, 0xe9, 0x4f, 0x4b])
       }})
     }})
+
+    describe("receiving a close frame with no code", function() { with(this) {
+      before(function() { with(this) {
+        this.driver().parse([0x88, 0x00])
+      }})
+
+      it("triggers the onclose event with code 1000", function() { with(this) {
+        assertEqual( [1000, ""], close )
+      }})
+
+      it("changes the state to closed", function() { with(this) {
+        assertEqual( "closed", driver().getState() )
+      }})
+    }})
   }})
 
   describe("in the closed state", function() { with(this) {
