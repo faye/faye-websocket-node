@@ -596,6 +596,20 @@ test.describe("Hybi", function() { with(this) {
       }})
     }})
 
+    describe("receiving a close frame with a too-short payload", function() { with(this) {
+      before(function() {
+        this.driver().parse([0x88, 0x01, 0x03])
+      })
+
+      it("triggers the onclose event with a protocol error", function() { with(this) {
+        assertEqual( [1002, ""], close )
+      }})
+
+      it("changes the state to closed", function() { with(this) {
+        assertEqual( "closed", driver().getState() )
+      }})
+    }})
+
     describe("receiving a close frame with no code", function() { with(this) {
       before(function() { with(this) {
         this.driver().parse([0x88, 0x00])
