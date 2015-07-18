@@ -1,3 +1,7 @@
+### 0.6.2 / 2015-07-18
+
+* When the peer sends a close frame with no error code, emit 1000
+
 ### 0.6.1 / 2015-07-13
 
 * Use the `buffer.{read,write}UInt{16,32}BE` methods for reading/writing numbers
