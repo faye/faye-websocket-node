@@ -34,6 +34,7 @@ test.describe("Draft76", function() { with(this) {
     var self = this
     this._driver.on('open',    function(e) { self.open = true })
     this._driver.on('message', function(e) { self.message += e.data })
+    this._driver.on('error',   function(e) { self.error = e })
     this._driver.on('close',   function(e) { self.close = true })
     this._driver.io.pipe(this.collector())
     this._driver.io.write(this.body())
@@ -80,6 +81,37 @@ test.describe("Draft76", function() { with(this) {
       it("sets the protocol version", function() { with(this) {
         driver().start()
         assertEqual( "hixie-76", driver().version )
+      }})
+
+      describe("with an invalid key header", function() { with(this) {
+        before(function() { with(this) {
+          request().headers["sec-websocket-key1"] = "2 L785 8o% s9Sy9@V. 4<1P5"
+        }})
+
+        it("writes a closing frame to the socket", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer([0xff, 0x00]))
+          driver().start()
+        }})
+
+        it("does not trigger the onopen event", function() { with(this) {
+          driver().start()
+          assertEqual( false, open )
+        }})
+
+        it("triggers the onerror event", function() { with(this) {
+          driver().start()
+          assertEqual( "Client sent invalid Sec-WebSocket-Key headers", error.message )
+        }})
+
+        it("triggers the onclose event", function() { with(this) {
+          driver().start()
+          assertEqual( true, close )
+        }})
+
+        it("changes the state to closed", function() { with(this) {
+          driver().start()
+          assertEqual( "closed", driver().getState()  )
+        }})
       }})
     }})
 
