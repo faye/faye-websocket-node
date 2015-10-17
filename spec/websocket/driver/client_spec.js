@@ -109,6 +109,16 @@ test.describe("Client", function() { with(this) {
         }})
       }})
 
+      describe("with an invalid URL", function() { with(this) {
+        define("url", function() { return "stream.wikimedia.org/rc" })
+
+        it("throws an error", function() { with(this) {
+          var message
+          try { driver() } catch (e) { message = e.message }
+          assertEqual( "stream.wikimedia.org/rc is not a valid WebSocket URL", message )
+        }})
+      }})
+
       describe("with custom headers", function() { with(this) {
         before(function() { with(this) {
           driver().setHeader("User-Agent", "Chrome")
