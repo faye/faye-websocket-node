@@ -1,3 +1,8 @@
+### 0.6.3 / 2015-11-06
+
+* Reject draft-76 handshakes if their Sec-WebSocket-Key headers are invalid
+* Throw a more helpful error if a client is created with an invalid URL
+
 ### 0.6.2 / 2015-07-18
 
 * When the peer sends a close frame with no error code, emit 1000
