@@ -4,8 +4,6 @@ var WebSocket = require('..'),
     http      = require('http'),
     https     = require('https');
 
-deflate = deflate.configure({maxWindowBits: 8});
-
 var port    = process.argv[2] || 7000,
     secure  = process.argv[3] === 'tls',
     options = {extensions: [deflate], ping: 5};
