@@ -73,8 +73,11 @@ var WebSocketSteps = test.asyncSteps({
     this._ws.close()
   },
 
-  check_open: function(callback) {
+  check_open: function(status, headers, callback) {
     this.assert( this._open )
+    this.assertEqual( status, this._ws.statusCode )
+    for (var name in headers)
+      this.assertEqual( headers[name], this._ws.headers[name.toLowerCase()] )
     callback()
   },
 
@@ -154,7 +157,7 @@ test.describe("Client", function() { with(this) {
   sharedBehavior("socket client", function() { with(this) {
     it("can open a connection", function() { with(this) {
       open_socket(socket_url, protocols)
-      check_open()
+      check_open(101, {"Upgrade": "websocket"})
       check_protocol("echo")
     }})
 
