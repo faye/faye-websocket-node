@@ -77,6 +77,11 @@ test.describe("draft-75", function() { with(this) {
           assertEqual( [0x00, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf, 0xff], collector().bytes )
         }})
 
+        it("converts numbers to strings", function() { with(this) {
+          driver().frame(50)
+          assertEqual( [0x00, 0x35, 0x30, 0xff], collector().bytes )
+        }})
+
         it("returns true", function() { with(this) {
           assertEqual( true, driver().frame("lol") )
         }})

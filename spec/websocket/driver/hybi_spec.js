@@ -420,6 +420,11 @@ test.describe("Hybi", function() { with(this) {
         assertEqual( [0x82, 0x03, 0x48, 0x65, 0x6c], collector().bytes )
       }})
 
+      it("converts numbers to strings", function() { with(this) {
+        driver().frame(50)
+        assertEqual( [0x81, 0x02, 0x35, 0x30], collector().bytes )
+      }})
+
       it("encodes multibyte characters correctly", function() { with(this) {
         driver().frame("Apple = ")
         assertEqual( [0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf], collector().bytes )
@@ -450,6 +455,11 @@ test.describe("Hybi", function() { with(this) {
       it("writes a ping frame to the socket", function() { with(this) {
         driver().ping("mic check")
         assertEqual( [0x89, 0x09, 0x6d, 0x69, 0x63, 0x20, 0x63, 0x68, 0x65, 0x63, 0x6b], collector().bytes )
+      }})
+
+      it("converts numbers to strings", function() { with(this) {
+        driver().ping(50)
+        assertEqual( [0x89, 0x02, 0x35, 0x30], collector().bytes )
       }})
 
       it("returns true", function() { with(this) {
