@@ -1,3 +1,7 @@
+### 0.6.4 / 2016-01-07
+
+* If a number is given as input for a frame payload, send it as a string
+
 ### 0.6.3 / 2015-11-06
 
 * Reject draft-76 handshakes if their Sec-WebSocket-Key headers are invalid

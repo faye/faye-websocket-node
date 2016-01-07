@@ -1,11 +1,11 @@
 { "name"            : "websocket-driver"
 , "description"     : "WebSocket protocol handler with pluggable I/O"
-, "homepage"        : "http://github.com/faye/websocket-driver-node"
+, "homepage"        : "https://github.com/faye/websocket-driver-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket"]
 , "license"         : "MIT"
 
-, "version"         : "0.6.3"
+, "version"         : "0.6.4"
 , "engines"         : {"node": ">=0.6.0"}
 , "main"            : "./lib/websocket/driver"
 , "dependencies"    : {"websocket-extensions": ">=0.1.1"}
@@ -17,5 +17,5 @@
                       , "url"   : "git://github.com/faye/websocket-driver-node.git"
                       }
 
-, "bugs"            : "http://github.com/faye/websocket-driver-node/issues"
+, "bugs"            : "https://github.com/faye/websocket-driver-node/issues"
 }
