@@ -1,6 +1,6 @@
 { "name"            : "faye-websocket"
 , "description"     : "Standards-compliant WebSocket server and client"
-, "homepage"        : "http://github.com/faye/faye-websocket-node"
+, "homepage"        : "https://github.com/faye/faye-websocket-node"
 , "author"          : "James Coglan <jcoglan@gmail.com> (http://jcoglan.com/)"
 , "keywords"        : ["websocket", "eventsource"]
 , "license"         : "MIT"
@@ -17,5 +17,5 @@
                       , "url"   : "git://github.com/faye/faye-websocket-node.git"
                       }
 
-, "bugs"            : "http://github.com/faye/faye-websocket-node/issues"
+, "bugs"            : "https://github.com/faye/faye-websocket-node/issues"
 }
