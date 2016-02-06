@@ -9,7 +9,7 @@ This is a general-purpose WebSocket implementation extracted from the
 [Faye](http://faye.jcoglan.com) project. It provides classes for easily building
 WebSocket servers and clients in Node. It does not provide a server itself, but
 rather makes it easy to handle WebSocket connections within an existing
-[Node](http://nodejs.org/) application. It does not provide any abstraction
+[Node](https://nodejs.org/) application. It does not provide any abstraction
 other than the standard [WebSocket API](http://dev.w3.org/html5/websockets/).
 
 It also provides an abstraction for handling
@@ -130,8 +130,8 @@ var ws = new WebSocket.Client('ws://www.example.com/', [], {
 });
 ```
 
-The `tls` value is a Node 'TLS options' object that will be passed to
-[`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback).
+The `tls` value is an object that will be passed to
+[`tls.connect()`](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback).
 
 
 ## Subprotocol negotiation
@@ -198,9 +198,12 @@ var ws = new WebSocket.Client(url, protocols, options);
 The client accepts some additional options:
 
 * `proxy` - settings for a proxy as described above
-* `tls` - a Node 'TLS options' object containing TLS settings for the origin
-  server, this will be passed to
-  [`tls.connect()`](http://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
+* `net` - an object containing settings for the origin server that will be
+  passed to
+  [`net.connect()`](https://nodejs.org/api/net.html#net_socket_connect_options_connectlistener)
+* `tls` - an object containing TLS settings for the origin server, this will be
+  passed to
+  [`tls.connect()`](https://nodejs.org/api/tls.html#tls_tls_connect_options_callback)
 * `ca` - (legacy) a shorthand for passing `{tls: {ca: value}}`
 
 
