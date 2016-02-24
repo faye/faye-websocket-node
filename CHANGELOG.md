@@ -1,3 +1,7 @@
+### 0.11.0 / 2016-02-24
+
+* Introduce a `net` option to the `Client` class for setting things like, say, `servername`
+
 ### 0.10.0 / 2015-07-08
 
 * Add the standard `code` and `reason` parameters to the `close` method

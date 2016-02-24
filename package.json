@@ -5,8 +5,8 @@
 , "keywords"        : ["websocket", "eventsource"]
 , "license"         : "MIT"
 
-, "version"         : "0.10.0"
-, "engines"         : {"node": ">=0.4.0"}
+, "version"         : "0.11.0"
+, "engines"         : {"node": ">=0.8.0"}
 , "main"            : "./lib/faye/websocket"
 , "dependencies"    : {"websocket-driver": ">=0.5.1"}
 , "devDependencies" : {"jstest": "", "pace": "", "permessage-deflate": ""}
