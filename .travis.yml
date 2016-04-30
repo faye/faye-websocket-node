@@ -11,6 +11,7 @@ node_js:
   - "iojs-3"
   - "4"
   - "5"
+  - "6"
 
 before_install:
   - '[ "${TRAVIS_NODE_VERSION}" = "0.6" ] && npm conf set strict-ssl false || true'
