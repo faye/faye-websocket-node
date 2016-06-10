@@ -10,7 +10,8 @@ This is a general-purpose WebSocket implementation extracted from the
 WebSocket servers and clients in Node. It does not provide a server itself, but
 rather makes it easy to handle WebSocket connections within an existing
 [Node](https://nodejs.org/) application. It does not provide any abstraction
-other than the standard [WebSocket API](http://dev.w3.org/html5/websockets/).
+other than the standard [WebSocket
+API](https://html.spec.whatwg.org/multipage/comms.html#network).
 
 It also provides an abstraction for handling
 [EventSource](https://html.spec.whatwg.org/multipage/comms.html#server-sent-events)
