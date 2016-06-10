@@ -13,10 +13,10 @@ rather makes it easy to handle WebSocket connections within an existing
 other than the standard [WebSocket API](http://dev.w3.org/html5/websockets/).
 
 It also provides an abstraction for handling
-[EventSource](http://dev.w3.org/html5/eventsource/) connections, which are
-one-way connections that allow the server to push data to the client. They are
-based on streaming HTTP responses and can be easier to access via proxies than
-WebSockets.
+[EventSource](https://html.spec.whatwg.org/multipage/comms.html#server-sent-events)
+connections, which are one-way connections that allow the server to push data to
+the client. They are based on streaming HTTP responses and can be easier to access
+via proxies than WebSockets.
 
 
 ## Installation
