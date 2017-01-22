@@ -1,3 +1,8 @@
+### 0.11.1 / 2017-01-22
+
+* Forcibly close the I/O stream after a timeout if the peer does not respond
+  after calling `close()`
+
 ### 0.11.0 / 2016-02-24
 
 * Introduce a `net` option to the `Client` class for setting things like, say, `servername`
