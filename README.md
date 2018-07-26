@@ -19,7 +19,6 @@ connections, which are one-way connections that allow the server to push data to
 the client. They are based on streaming HTTP responses and can be easier to access
 via proxies than WebSockets.
 
-
 ## Installation
 
 ```
