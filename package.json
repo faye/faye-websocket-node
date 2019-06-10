@@ -12,6 +12,9 @@
           "engines": {
                     "node": ">=0.8.0"
           },
+          "files": [
+                    "lib"
+          ],
           "main": "./lib/faye/websocket",
           "dependencies": {
                     "websocket-driver": ">=0.5.1"
