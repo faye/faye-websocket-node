@@ -1,7 +1,11 @@
-### 0.11.2 / 2019-06-10
+### 0.11.3 / 2019-06-10
 
 - Fix a race condition that caused a timeout not to be cancelled immediately
   when the WebSocket is closed
+
+### 0.11.2 / 2019-06-10
+
+(This version was pulled due to an error when publishing)
 
 ### 0.11.1 / 2017-01-22
 
