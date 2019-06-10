@@ -1,3 +1,8 @@
+### 0.11.2 / 2019-06-10
+
+- Fix a race condition that caused a timeout not to be cancelled immediately
+  when the WebSocket is closed
+
 ### 0.11.1 / 2017-01-22
 
 - Forcibly close the I/O stream after a timeout if the peer does not respond
