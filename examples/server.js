@@ -6,7 +6,7 @@ var WebSocket = require('..'),
 
 var port    = process.argv[2] || 7000,
     secure  = process.argv[3] === 'tls',
-    options = {extensions: [deflate], ping: 5};
+    options = { extensions: [deflate], ping: 5 };
 
 var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], options);
@@ -33,11 +33,11 @@ var requestHandler = function(request, response) {
     time += 1;
     es.send('Time: ' + time);
     setTimeout(function() {
-      if (es) es.send('Update!!', {event: 'update', id: time});
+      if (es) es.send('Update!!', { event: 'update', id: time });
     }, 1000);
   }, 2000);
 
-  fs.createReadStream(__dirname + '/haproxy.conf').pipe(es, {end: false});
+  fs.createReadStream(__dirname + '/haproxy.conf').pipe(es, { end: false });
 
   es.onclose = function() {
     clearInterval(loop);
@@ -51,7 +51,7 @@ var staticHandler = function(request, response) {
 
   fs.readFile(__dirname + path, function(err, content) {
     var status = err ? 404 : 200;
-    response.writeHead(status, {'Content-Type': 'text/html'});
+    response.writeHead(status, { 'Content-Type': 'text/html' });
     response.write(content || 'Not found');
     response.end();
   });

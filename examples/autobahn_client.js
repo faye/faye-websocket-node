@@ -5,7 +5,7 @@ var WebSocket = require('..').Client,
 var host    = 'ws://localhost:9001',
     agent   = encodeURIComponent('node-' + process.version),
     cases   = 0,
-    options = {extensions: [deflate]};
+    options = { extensions: [deflate] };
 
 var socket = new WebSocket(host + '/getCaseCount'),
     url, progress;

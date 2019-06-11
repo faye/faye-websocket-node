@@ -4,8 +4,8 @@ var fs    = require('fs'),
     net   = require('net'),
     url   = require('url');
 
-var AGENTS = {'http:': http, 'https:': https},
-    PORTS  = {'http:': 80,   'https:': 443};
+var AGENTS = { 'http:': http, 'https:': https },
+    PORTS  = { 'http:': 80,   'https:': 443 };
 
 var ProxyServer = function(options) {
   var proxy = options.tls

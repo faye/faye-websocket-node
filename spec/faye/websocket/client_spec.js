@@ -17,7 +17,7 @@ var WebSocketSteps = test.asyncSteps({
   },
 
   proxy: function(port, secure, callback) {
-    this._proxyServer = new ProxyServer({tls: secure})
+    this._proxyServer = new ProxyServer({ tls: secure })
     this._proxyServer.listen(port)
     process.nextTick(callback)
   },
@@ -157,7 +157,7 @@ test.describe("Client", function() { with(this) {
   sharedBehavior("socket client", function() { with(this) {
     it("can open a connection", function() { with(this) {
       open_socket(socket_url, protocols)
-      check_open(101, {"Upgrade": "websocket"})
+      check_open(101, { "Upgrade": "websocket" })
       check_protocol("echo")
     }})
 

@@ -5,12 +5,12 @@ var WebSocket = require('..').Client,
 var url   = process.argv[2],
     proxy = process.argv[3],
     ca    = fs.readFileSync(__dirname + '/../spec/server.crt'),
-    tls   = {ca: ca};
+    tls   = { ca: ca };
 
 var ws = new WebSocket(url, [], {
-  proxy:      {origin: proxy, headers: {'User-Agent': 'Echo'}, tls: tls},
+  proxy:      { origin: proxy, headers: { 'User-Agent': 'Echo' }, tls: tls },
   tls:        tls,
-  headers:    {Origin: 'http://faye.jcoglan.com'},
+  headers:    { Origin: 'http://faye.jcoglan.com' },
   extensions: [deflate]
 });
 
