@@ -2,6 +2,7 @@
 
 - Fix a race condition that caused a timeout not to be cancelled immediately
   when the WebSocket is closed
+- Change license from MIT to Apache 2.0
 
 ### 0.11.2 / 2019-06-10
 
