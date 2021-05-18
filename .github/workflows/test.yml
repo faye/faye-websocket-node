@@ -1,0 +1,41 @@
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '0.8'
+          - '0.10'
+          - '0.12'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          - '16'
+    name: node.js v${{ matrix.node }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - if: matrix.node == '0.8'
+        run: npm conf set strict-ssl false
+
+      - run: node --version
+      - run: npm install
+      - run: npm test
