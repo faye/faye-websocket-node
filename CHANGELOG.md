@@ -1,3 +1,7 @@
+### 0.11.4 / 2021-05-24
+
+- Prevent the client hanging if `close()` is called when already closing
+
 ### 0.11.3 / 2019-06-10
 
 - Fix a race condition that caused a timeout not to be cancelled immediately
