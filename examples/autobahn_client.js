@@ -2,7 +2,7 @@ var WebSocket = require('..').Client,
     deflate   = require('permessage-deflate'),
     pace      = require('pace');
 
-var host    = 'ws://localhost:9001',
+var host    = 'ws://0.0.0.0:9001',
     agent   = encodeURIComponent('node-' + process.version),
     cases   = 0,
     options = { extensions: [deflate] };
