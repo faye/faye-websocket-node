@@ -20,7 +20,7 @@ var runCase = function(n) {
   if (n > cases) {
     url = host + '/updateReports?agent=' + agent;
     socket = new WebSocket(url);
-    socket.onclose = process.exit;
+    socket.onclose = function() { process.exit() };
     return;
   }
 
