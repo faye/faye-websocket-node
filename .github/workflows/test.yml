@@ -34,4 +34,8 @@ jobs:
 
       - run: node --version
       - run: npm install
+
+      - run: npm install 'nopt@5'
+      - run: rm -rf node_modules/jstest/node_modules/nopt
+
       - run: npm test
