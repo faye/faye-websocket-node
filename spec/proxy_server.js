@@ -20,7 +20,7 @@ var ProxyServer = function(options) {
   var onRequest = function(request, response) {
     if (options.debug) console.log(request.method, request.url, request.headers);
 
-    var uri     = url.parse(request.url),
+    var uri     = (typeof URL === 'function') ? new URL(request.url) : url.parse(request.url),
         agent   = AGENTS[uri.protocol],
         headers = {};
 
