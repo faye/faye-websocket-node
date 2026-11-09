@@ -8,7 +8,6 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '0.8'
           - '0.10'
           - '0.12'
           - '4'
@@ -20,6 +19,9 @@ jobs:
           - '16'
           - '18'
           - '20'
+          - '22'
+          - '24'
+          - '26'
     name: node.js v${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
@@ -28,9 +30,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-
-      - if: matrix.node == '0.8'
-        run: npm conf set strict-ssl false
 
       - run: node --version
       - run: npm install
