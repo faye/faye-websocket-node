@@ -49,6 +49,12 @@ var requestHandler = function(request, response) {
 var staticHandler = function(request, response) {
   var path = request.url;
 
+  if (path !== '/ws.html' && path !== '/sse.html') {
+    response.writeHead(404, { 'Content-Type': 'text/html' });
+    response.end('Not found');
+    return;
+  }
+
   fs.readFile(__dirname + path, function(err, content) {
     var status = err ? 404 : 200;
     response.writeHead(status, { 'Content-Type': 'text/html' });
