@@ -6,7 +6,7 @@ var WebSocket = require('..'),
 
 var port    = process.argv[2] || 7000,
     secure  = process.argv[3] === 'tls',
-    options = { extensions: [deflate], ping: 5 };
+    options = { extensions: [deflate], ping: 5, allowDrafts: true };
 
 var upgradeHandler = function(request, socket, head) {
   var ws = new WebSocket(request, socket, head, ['irc', 'xmpp'], options);

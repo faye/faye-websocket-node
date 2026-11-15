@@ -190,6 +190,8 @@ var ws = new WebSocket.Client(url, protocols, options);
   The default value is `2^26 - 1`, or 1 byte short of 64 MiB.
 - `ping` - an integer that sets how often the WebSocket should send ping frames,
   measured in seconds
+- `allowDrafts` - whether to enable support for long-outdated draft versions of
+  the WebSocket protocol, `false` by default
 
 The client accepts some additional options:
 
