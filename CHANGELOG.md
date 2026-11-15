@@ -1,3 +1,9 @@
+### 0.12.0 / 2026-11-16
+
+- Add `allowDrafts` option to explicitly enable support for `draft75` and
+  `draft76` protocols; these are now disabled by default
+- Fix deprecation warnings caused by use of `url.parse()`
+
 ### 0.11.4 / 2021-05-24
 
 - Prevent the client hanging if `close()` is called when already closing
